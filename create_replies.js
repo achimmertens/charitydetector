@@ -11,16 +11,21 @@ let replies = [];
 results.forEach(entry => {
   // Check if the keyword "CHARY" is present in the result content
   if (entry.result.includes("CHARY")) {
-    // Extract the author, permlink, and reply content
+    // Extract the author and permlink
     let author = entry.content.author;
     let permlink = entry.content.permlink;
+
+    // Construct the new permlink
+    let fullPermlink = `https://peakd.com/@${author}/${permlink}`;
+
+    // Extract the reply content
     let reply = entry.result.split('content: ')[1].trim();
     reply = reply.substring(1, reply.length - 2); // Remove the enclosing single quotes and the comma at the end
 
     // Push the filtered entry into the replies array
     replies.push({
       "author": author,
-      "permlink": permlink,
+      "permlink": fullPermlink,
       "Reply": reply
     });
   }
