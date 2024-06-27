@@ -3,3 +3,12 @@ Ich möchte ein paar JavaScripte bauen, die in der Hive Blockchain ein paar Fore
 Hier die Startreihenfolge:
 1. node fetchhive.js (wobei hier ggf. die URL angepasst werden sollte) -> es entsteht contents.json mit den Posts und ein paar Meta-Feldern aus Hive.
 2. node process_contents.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results.json mit den Auswertungen der Posts.
+3. node create_replies.js -> Es wird nach !CHARY gefiltert und replies.json gespeichert
+
+Nächste Stufen:
+- Die KI mit Beispieldaten trainieren und ein neues Modell erstellen.
+- Ein script schreiben, das replies.json auswertet und die Kommentare hochlädt.
+
+
+
+
