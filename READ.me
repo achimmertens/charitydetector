@@ -6,9 +6,13 @@ Hier die Startreihenfolge:
 3. node create_replies.js -> Es wird nach !CHARY gefiltert und replies.json gespeichert
 
 Nächste Stufen:
-- Die KI mit Beispieldaten trainieren und ein neues Modell erstellen.
+- Die KI mit Beispieldaten trainieren und ein neues Modell erstellen. Tierbeispiele entfernen.
 - Ein script schreiben, das replies.json auswertet und die Kommentare hochlädt.
+- Scoring einführen
 
 
-
+Hier der Befehl um das Modefile zu bauen:
+ollama show llama3 --modelfile > Charyllama3.modelfile
+Dann den Text aus charity_examples.txt hinter dem letzten "PARAMETER" und vor dem "LICENSE" Abschnitt in das File einfügen. Danach:
+ollama create charyllama3 --file Charyllama3.modelfile
 

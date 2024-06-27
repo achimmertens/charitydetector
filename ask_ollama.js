@@ -17,7 +17,7 @@ async function main() {
 
         // POST-Daten zusammenstellen
         const postData = {
-            "model": "llama3",
+            "model": "charyllama3",
             "messages": [
                 {
                     "role": "user",
