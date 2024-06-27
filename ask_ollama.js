@@ -38,6 +38,7 @@ async function main() {
 
         // Antwort ausgeben
         console.log(response.data);
+        
     } catch (error) {
         console.error('Ein Fehler ist aufgetreten:', error);
     }

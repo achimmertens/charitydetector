@@ -9,7 +9,8 @@ async function fetchPosts() {
             method: 'bridge.get_ranked_posts',
             params: {
                 sort: 'created',
-                tag: 'hive-149312',
+                // tag: 'hive-149312', // charity community
+                tag: 'charity',
                 limit: 10
             },
             id: 1
