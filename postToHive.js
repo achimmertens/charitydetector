@@ -48,7 +48,7 @@ async function postComment(author, permlink, body) {
       const cleanedBody = cleanReply(body);
   
       await client.broadcast.comment({
-        author: 'anobel',
+        author: 'charitychecker',
         body: cleanedBody,
         json_metadata: JSON.stringify({}),
         parent_author: parentAuthor,
@@ -87,7 +87,7 @@ async function sendUpvote(author, permlink, weight) {
       const privateKey = PrivateKey.from(config.privateKey);
       
       await client.broadcast.vote({
-        voter: 'anobel',
+        voter: 'charitychecker',  // Neuen Account 'charitychecker' erstellen und hier einfügen
         author: author,
         permlink: actualPermlink,
         weight: weight // 1000 entspricht 10%
@@ -106,7 +106,7 @@ async function processReplies() {
     const permlink = reply.permlink.split('@')[1];
     const body = reply.Reply;
 
-    // await postComment(author, permlink, body);
+    await postComment(author, permlink, body);
 
     // 10% Upvote senden
     await sendUpvote(author, permlink, 1000);
