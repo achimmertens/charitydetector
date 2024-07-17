@@ -4,12 +4,17 @@ Hier die Startreihenfolge:
 1. node fetchhive.js (wobei hier ggf. die URL angepasst werden sollte) -> es entsteht contents.json mit den Posts und ein paar Meta-Feldern aus Hive.
 2. node process_contents.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results.json mit den Auswertungen der Posts.
 3. node create_replies.js -> Es wird nach !CHARY gefiltert und replies.json gespeichert
+4. node postToHive.js
 
 Nächste Stufen:
-- Die KI mit Beispieldaten trainieren und ein neues Modell erstellen. Tierbeispiele entfernen.
-- Ein script schreiben, das replies.json auswertet und die Kommentare hochlädt.
+- Dafür sorgen, dass Beiträge nur einmal geupvoted und replied werden
 - Scoring einführen, nur Beiträge bewerten, deren Autor eine Reputation höher 40 hat.
+- Upvote in Abhängigkeit vom Chary-Score vergeben
 
+
+Done Juli 2024:
+- Ein script schreiben, das replies.json auswertet und die Kommentare hochlädt.
+- Die KI mit Beispieldaten trainieren und ein neues Modell erstellen. Tierbeispiele entfernen.
 
 Hier der Befehl um das Modefile zu bauen:
 ollama show llama3 --modelfile > Charyllama3.modelfile
