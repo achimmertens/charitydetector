@@ -99,6 +99,22 @@ async function sendUpvote(author, permlink, weight) {
     }
   }
 
+
+  // Funktion zum Erstellen des JSON-Objekts für die Upvotes
+  function createUpvotedJSON(replies) {
+    const upvotedJSON = [];
+    for (const reply of replies) {
+      const entry = {};
+      entry.entry = upvotedJSON.length + 1;
+      entry.content = { author: reply.author, permlink: reply.permlink };
+      entry.Upvotedate = new Date().toISOString();
+      upvotedJSON.push(entry);
+    }
+    return JSON.stringify(upvotedJSON, null, 2);
+  }
+  
+
+
 // Durch die Antworten iterieren und Kommentare posten
 async function processReplies() {
   for (const reply of replies) {
@@ -106,10 +122,11 @@ async function processReplies() {
     const permlink = reply.permlink.split('@')[1];
     const body = reply.Reply;
 
-    await postComment(author, permlink, body);
+    // Kommentar posten
+    //await postComment(author, permlink, body);
 
     // 10% Upvote senden
-    await sendUpvote(author, permlink, 1000);
+    //await sendUpvote(author, permlink, 1000);
     
     // Optional: Pause zwischen den Kommentaren, um Rate-Limits zu vermeiden
     await new Promise(resolve => setTimeout(resolve, 3000));
@@ -118,3 +135,9 @@ async function processReplies() {
 
 // Skript ausführen
 processReplies().then(() => console.log('Alle Kommentare wurden verarbeitet.'));
+
+
+// JSON-Datei mit den bereits geupvoteten Kommentaren erstellen
+const upvotedJSONStr = createUpvotedJSON(replies);
+fs.writeFileSync('allreadyUpvoted.json', upvotedJSONStr);
+
