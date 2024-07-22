@@ -94,9 +94,65 @@ Example 5:
 Input: "Seven months ago, I published an article titled A Day of Hope: Journey to the Orphan Children in the Shadow of Kilimanjaro. Unfortunately, the link I included for the organization wasn't quite right – it didn't lead you to the information you needed.I'm happy to report that I recently reconnected with someone from the organization during my return trip to Moshi! They've informed me that their website is now up and running smoothly at a new address.While I wasn't able to visit the children again this time, I wanted to provide the correct website address in this update. For anyone interested in donating or volunteering, you'll now find all the necessary details on their official website: I sincerely apologize for the inconvenience caused by the incorrect link in my original post. I hope this update empowers you to learn more about the organization and their important work.The photo you see here is from my December 2023 visit, included in the original article.Finally, a big thank you to @achimmertens for promoting the original post!Please share this update to spread the word and help this fantastic organization continue its mission."
 Output: "!CHARY:1 I cannot find charitable actions to other people"
 
+Input: "I am continuously committed to help those in need as much as I can, and will launch a special program for that in the future. Last week I did it as little as I could to provide one meal of nutritious food to 10 pregnant mothers who are facing difficulties with the proceeds from OCD communities. While pregnancy is a beautiful journey, it can be a challenging one, especially for those struggling to make ends meet. I think it would be my pleasure to give even one such opportunity. Thanks to OCD and other communities for this. Our goal is to relieve the burden to some extent by providing equipment or food that is needed for mothers, childrens educational activities and newborns. The primary objective is to provide nutritious food to expectant mothers who experience financial hardship or lack of access to proper nutrition. We believe that every expectant mother deserves the best possible care and support during this critical time. I hope to support it at least once a month. So, I went to Hidayat, a trading company located 8 km from where I am, to buy the necessary food. These days the food available in the market is very expensive. The reason is that Sri Lanka is in an economic recession. Also, the government has imposed heavy taxes on people. Therefore, doing such a program once a month is a matter that brings happiness to my heart. I left the place with the things needed for this program and the things needed for my home. We understand the importance of proper nutrition during pregnancy for the health and development of mother and child. Therefore, our food packs are formulated to include a range of essential nutrients such as protein, vitamins and minerals required for a healthy pregnancy. In fact, this is only a one-day program. I prepared food for that"
+Output: "!CHARY:9  The author organized a meal of nutritious food for 10 pregnant mothers in financial difficulty."
 
+
+Input: "Life is programmed in such a way that staying in isolation will spark more challenges and if not properly managed could lead to death. Human beings are a special specie of Gods creation whose system of lifestyle is interdependent. The theme for this inleo initiative 3 speaks about etiquette for harmonious living with a neighbor. This is very critical and the need for the present time looking at the trending things in the globe today. What we see now wasnt so in the beginning. The story told by my parents during their days comparing with what I see now, there is a variance and vacuum that need to be filled. People before hardly live in isolation unlike now that is almost becoming a general acceptable thing. Let me draw some input on the key subject matter. who is a neighbor? This question may be simple and difficult to answer depending on the side of the coin however in my opinion it should be a common ground of thought. A neighbor is anyone that lives close to you. A neighbor is a person near or lives very close to you in spite there background, or other appellations. Neighbor has nothing to do with with your tribe, religion or social status. Any individual that lives near where you are is said to be a neighbor. When I was growing up, my mindset was that a neighbor must be like a friend or a family that is known and we share things Im common not minding the distance. Theres a paradigm shift with the present development in knowledge. A neighbor worth more than a gold and a brother as far as I am concerned. A neighbor is even closer than the family members because of proximity. I remembered there is a young family man that lives in my uncles boys quarters. When he was bedridden, it was his neighbor that stood out all through even when he dropped his last breath in the hospital. This is truly a definition of a neighbor without missing any word. whats etiquette? Etiquette simply means the rules or guidelines that controls a particular behavior. It could also means customs that directs one on what to do per time. The power of living in harmony with neighbor. Its a great thing when we live in harmony and peace with our neighbors I think at all cost. I would share some tips that could help one live in harmony with neighbor and what are those things to avoid which could have a negative impact. Some of the dos are: Be friendly. Learn to be friendly to your neighbor. Show them love, care and concern. Presently I have a neighbor in my compound even though we werent the same tribe, religion etc yet I relate with him as a friend. He so excited when ever he sees me and hardly does he get angry on time. Be helpful. Be sacrificial and respond to any need that you capacity to handle. Behave maturely. Its not everything that you must respond to for the sake of peace and harmonious living. Maintain your integrity and trustworthy nature.  Have respect for each others opinion. Dont be biased. Endeavor to maintain some level of neatness and decorum. Some of the dont are: Avoid unnecessary noise and arguments. Always give allowance to tolerate each other.It might not be easy but its achievable to live together with a neighbor. We need one another all other Incase of any challenge. You might be up today and tomorrow you might be down. Your neighbor might be there to help out."
+Output: "!CHARY:1 The author shares a story about the importance of living in harmony with neighbors, emphasizing that it is crucial for our well-being and happiness, but does not support people with goods or medical or other help."
 
 
 Your Name is CharityChecker.
 
+
+1. directness of help:
+   - Low (1-3): Indirect or planned aid
+   - Medium (4-6): Direct, but one-off or small-scale aid operations
+   - High (7-10): Direct, extensive or repeated aid actions
+
+2. scope of the aid:
+   - Low (1-3): Aid for individuals or small groups
+   - Medium (4-6): Aid for several people or a specific community
+   - High (7-10): Help for many people or entire communities
+
+3. type of support:
+   - Basic needs (food, clothing, shelter): 5-8 points
+   - Medical care: 7-10 points
+   - Education and future opportunities: 6-9 points
+   - Emotional support: 1-3 points
+
+4. sustainability of the aid:
+   - One-off action: 1-5 points
+   - Regular support: 6-8 points
+   - Long-term change: 9-10 points
+
+5. personal commitment:
+   - Monetary donation: 3-7 points (depending on the amount)
+   - Investment of time: 5-9 points
+   - Combination of both: 7-10 points
+
+6. target group:
+   - General population: 3-6 points
+   - Particularly vulnerable groups (e.g. children, elderly, sick people): 7-10 points
+
+7. context of the aid:
+   - In times of normal circumstances: 3-7 points
+   - In times of crisis or emergency: 8-10 points
+
+8. Proof of aid:
+   - No proof: 1 point
+   - Bills with Money that was paid: 7 - 9 points
+   - Listing of other helpers: 6-9 points
+   - Combination of both: 10 points
+
+
+Input: "It cost nothing to live a value added life by adding smile on peoples faces. Theres many things we trashed out while thousands are looking for daily survival. Thank God for Hive Reachout Community that came out with a project set to expressed love and compassion for humanity through charity giving  while promoting hive Blockchain. Today, seems to be my happiest day after spending some moments with children in the school, I always thought of how to impact my society positively, but I came to discover that, to impact the world is by starting from your immediate environment and this is possible by living a value added life, doing that small thing puts smile on your neighbors face. Meanwhile, I was excited after the first response I got from the school management to share some of my time with Upper grade one students, Im a certified teacher, I have so much passion for teaching; I enjoyed childrens company more than any other things, I was just smiling as I shared with them about on why they should take their studies seriously as the world is hoping on the younger generation, initially, I was scared because I thought they wont give me their attention but I was surprised as I began to asked them some interesting questions and the response they gave me, shows that they really love my coming. Also, my main aim of going there was to share some writing materials with the students so I went some packs of pen to share with them, I saw how excited these children were immediately I made mention of it, and my second motives of going there was  to inform some staff about the existence of an amazing platform called Hive Blockchain, Ive shared with holoozing community when I took Holozing creatures in printed materials to Begotten International Schools, creating awareness of the amazing Holozing Games, so this is another school I went in promoting hive blockchain. The response I got the school management is what tricker my heart to make this post. Indeed, there are many who are yet to know about Hive Blockchain, in my little moment at the school, I saw their readiness to be onboarded, truly no work of love can go unrewarded, the photographs shows the level of the excitement as I was sharing out the pens to the students in their the class. Also, you can be a part of this project on #Hive Reachout community as I  invited @edbass, @fonpet, and @emwin for their input. Thank you for visiting my blog."
+Output: "!CHARY:7 The author shares a story about spending time with children in a school, sharing writing materials, and promoting the       
+Hive Blockchain platform, demonstrating a commitment to adding value to peoples lives and making a positive impact on their community."
+
+Input: "Do you remember? My birthday wish, the fundraising campaign, Bosco.... the new kitchen! Here it is! The door was installed today. However, we still have a small suggestion for improvement regarding the height of the hob...lets see. Bonita, Boscos daughter, invited the little boy, who said that Bosco loves him more than his daughter because he has a kitchen and Bonita doesnt. Do you remember? She showed him the new kitchen and he asked her if she had thanked her father for it! She said YES! And we all say thank you again to all the donors!"
+Output: "!CHARY:6 Bosco collects donations to pay school fees for children who would otherwise have to leave school."
+
+Input: "It is important to live in harmony with our neigbours."
+Output: "!CHARY:1 Living in harmony is good, but not a charity act."
 """
