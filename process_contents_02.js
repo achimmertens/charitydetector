@@ -14,6 +14,10 @@ function extractContent(output) {
     return '';
 }
 
+function formatPermlink(author, oldPermlink) {
+    return `https://peakd.com/@${author}/${oldPermlink}`;
+}
+
 async function processContents() {
     try {
         // Lese contents.json
@@ -29,6 +33,9 @@ async function processContents() {
         for (let i = 0; i < contents.length; i++) {
             const content = contents[i];
             const summary = content.content.body; // Hier wird kein JSON.parse benötigt, da content bereits ein Objekt ist
+            const author = content.content.author; 
+            const oldpermlink = content.content.permlink;
+            const permlink = formatPermlink(author, oldpermlink);
             console.log(`Verarbeite Eintrag ${i + 1} von ${contents.length}...`);
 
             // Schreibe content.json
@@ -52,8 +59,8 @@ async function processContents() {
                     entry: i + 1,
                     content: {
                         body: summary,
-                        author: content.author,
-                        permlink: content.permlink
+                        author: author,
+                        permlink: permlink
                     },
                     firstResult: extractedContent1
                 });
