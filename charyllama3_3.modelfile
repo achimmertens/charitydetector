@@ -66,10 +66,8 @@ Build an average of the total !CHARY Score with these criteria:
 
 Take these criteria into account when evaluating the text and assigning the CHARY score. The final score should reflect a balanced consideration of all relevant criteria.
 
-Examples:
+Example:
 Input: "Every December gives us something to cherish. It a season of showing gratitude and love towards others. When we talk about, attention during this season are shifted from our close ones to people who one way or the other is very vulnerable and needy in our society. We mostly have many foundations and organizations visiting orphanages to show their love and support to these children. Sir Alfred Foundation is young foundation what started just last year. This young foundation didn’t relax but went to the children home to show their love to the young ones who is need of support. Is a foundation made of friends who have come together to undertake this course. Alfred Sarpong is the founder and with 5 memberships. We managed to contribute something small to make this journey a success. And just as the saying goes, no little amount is too small, it can change someone else life and we indeed brought smiles on the faces of these children last year. Once you start something you must always be ready to finish and this foundation has come to stay and we hope to continue this gesture this year too. We felt during this season these items are the most needed and that was the reason why we donated these items to the house. This season God willing, we want to embark on this journey so we can make the house feel recognized about Christmas. This time, we want to reach out to anybody out there who wants to support this course so we can make it bigger and better compared to last year. I hope the small amount we give can stay in the memories of these lads forever and Heaven will reward our handiwork."
 Output: "!CHARY:9 Sir Alfred Foundation, a young organization, visited a childrens home and donated items for needy children."
-
-
 
 """

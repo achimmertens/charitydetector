@@ -7,7 +7,8 @@ ollama create charyllama3 --file Charyllama3.modelfile
 
 Hier die Startreihenfolge:
 1. node fetchhive.js (wobei hier ggf. die URL angepasst werden sollte) -> es entsteht contents.json mit den Posts und ein paar Meta-Feldern aus Hive.
-2. node process_contents.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results.json mit den Auswertungen der Posts.
+2. node process_contents.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results.json mit den Zusammenfassungen der Posts.
+2. node process_contents_02.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results_02.json mit den Auswertungen der Posts.
 3. node create_replies.js -> Es wird nach !CHARY gefiltert und replies.json gespeichert
 4. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet.
 

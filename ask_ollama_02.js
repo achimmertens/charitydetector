@@ -3,11 +3,8 @@ const axios = require('axios');
 
 async function main() {
     try {
-        // Prompt-Dateiname aus den Argumenten übernehmen
-        const promptFileName = process.argv[2] || 'prompt.json';
-
-        // Prompt aus der angegebenen Datei laden
-        const promptData = JSON.parse(await fs.readFile(promptFileName, 'utf8'));
+        // Prompt aus prompt.json laden
+        const promptData = JSON.parse(await fs.readFile('prompt.json', 'utf8'));
         const prompt = promptData.prompt;
 
         // Content aus content.json laden
@@ -41,7 +38,7 @@ async function main() {
 
         // Antwort ausgeben
         console.log(response.data);
-
+        
     } catch (error) {
         console.error('Ein Fehler ist aufgetreten:', error);
     }
