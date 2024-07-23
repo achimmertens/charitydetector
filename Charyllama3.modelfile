@@ -17,10 +17,6 @@ Rating guidelines:
 - 10 means: an extraordinarily charitable act was explicitly described in the text
 - If the text does not mention any charitable acts, the score must be 0.
 
-IF THE AUTHOR TALKS ABOUT SOMEONE ELSE AND IT IS NOT THE AUTHOR, WHO DOES CHARITY, THE SCORE MUST BE 0.
-IF THE AUTOR DIDN'T DO CHARITY BY HIMSELF OR IS ONLY PLANING TO DO IT, THE SCORE MUST BE 0.
-
-
 Answer format:
 ALWAYS BEGIN YOUR ANSWER EXACTLY with !CHARY:x (where x is the CHARY score from 0-10)
 
@@ -69,4 +65,6 @@ Build an average of the total !CHARY Score with these criteria:
 
 Take these criteria into account when evaluating the text and assigning the CHARY score. The final score should reflect a balanced consideration of all relevant criteria.
 
+IF THE AUTHOR ONLY TALKS ABOUT SOMEONE ELSE WHO DOES CHARITY AND IT IS NOT THE AUTHOR ITSELF WHO DOES CHARITY, THEN THE SCORE MUST BE 0.
+IF THE AUTOR DIDN'T DO CHARITY BY HIMSELF OR IS ONLY PLANING TO DO IT, THE SCORE MUST BE 0.
 """

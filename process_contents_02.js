@@ -45,9 +45,9 @@ async function processContents() {
             await fs.writeFile('content.json', JSON.stringify(contentJson), 'utf8');
 
             // Rufe ask_ollama.js mit prompt.json auf
-            console.log('Starte ask_ollama.js mit prompt.json...');
+            console.log('Starte ask_ollama.js mit prompt_01.json...');
             try {
-                const { stdout: stdout1, stderr: stderr1 } = await execPromise('node ask_ollama.js prompt.json');
+                const { stdout: stdout1, stderr: stderr1 } = await execPromise('node ask_ollama.js prompt_01.json');
                 
                 if (stderr1) console.error('ask_ollama.js Fehler:', stderr1);
 
