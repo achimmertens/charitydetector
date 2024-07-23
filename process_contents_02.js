@@ -3,6 +3,17 @@ const util = require('util');
 const exec = require('child_process').exec;
 const execPromise = util.promisify(exec);
 
+function extractContent(output) {
+    const startMarker = "content: '";
+    const endMarker = " },\n  done_reason:";
+    const startIndex = output.indexOf(startMarker) + startMarker.length;
+    const endIndex = output.indexOf(endMarker, startIndex);
+    if (startIndex >= 0 && endIndex >= 0) {
+        return output.substring(startIndex, endIndex).trim().replace(/\\n/g, '\n');
+    }
+    return '';
+}
+
 async function processContents() {
     try {
         // Lese contents.json
@@ -30,8 +41,11 @@ async function processContents() {
             console.log('Starte ask_ollama.js mit prompt.json...');
             try {
                 const { stdout: stdout1, stderr: stderr1 } = await execPromise('node ask_ollama.js prompt.json');
-                console.log('ask_ollama.js Ausgabe:', stdout1);
+                
                 if (stderr1) console.error('ask_ollama.js Fehler:', stderr1);
+
+                const extractedContent1 = extractContent(stdout1);
+                console.log('ask_ollama.js exctracted Ausgabe:', extractedContent1);
 
                 // Ergebnis speichern
                 results.push({
@@ -41,19 +55,21 @@ async function processContents() {
                         author: content.author,
                         permlink: content.permlink
                     },
-                    firstResult: stdout1.trim()
+                    firstResult: extractedContent1
                 });
 
                 // Zweites Mal ask_ollama.js mit prompt_02.json aufrufen
-                const contentJson2 = { content: stdout1.trim() };
+                const contentJson2 = { content: extractedContent1 };
                 await fs.writeFile('content.json', JSON.stringify(contentJson2), 'utf8');
                 console.log('Starte ask_ollama.js mit prompt_02.json...');
                 const { stdout: stdout2, stderr: stderr2 } = await execPromise('node ask_ollama.js prompt_02.json');
                 console.log('ask_ollama.js Ausgabe:', stdout2);
                 if (stderr2) console.error('ask_ollama.js Fehler:', stderr2);
 
+                const extractedContent2 = extractContent(stdout2);
+
                 // Zweites Ergebnis speichern
-                results[results.length - 1].secondResult = stdout2.trim();
+                results[results.length - 1].secondResult = extractedContent2;
 
                 // Ergebnisse in Datei speichern
                 await fs.writeFile(resultsFile, JSON.stringify(results, null, 2), 'utf8');
