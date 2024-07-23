@@ -22,7 +22,7 @@ async function processContents() {
     try {
         // Lese contents.json
         console.log('Lese contents.json...');
-        const contentsRaw = await fs.readFile('results.json', 'utf8');
+        const contentsRaw = await fs.readFile('contents.json', 'utf8');
         const contents = JSON.parse(contentsRaw);
         
         // Datei für Ergebnisse erstellen
@@ -32,9 +32,9 @@ async function processContents() {
         // Iteriere durch jeden Eintrag
         for (let i = 0; i < contents.length; i++) {
             const content = contents[i];
-            const summary = content.content.body; // Hier wird kein JSON.parse benötigt, da content bereits ein Objekt ist
-            const author = content.content.author; 
-            const oldpermlink = content.content.permlink;
+            const summary = content.body; // Hier wird kein JSON.parse benötigt, da content bereits ein Objekt ist
+            const author = content.author; 
+            const oldpermlink = content.permlink;
             const permlink = formatPermlink(author, oldpermlink);
             console.log(`Verarbeite Eintrag ${i + 1} von ${contents.length}...`);
 
