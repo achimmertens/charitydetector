@@ -9,6 +9,31 @@ let allreadyUpvoted = JSON.parse(allreadyUpvotedJSON);
 // Initialize an array to store the filtered entries
 let replies = [];
 
+function cleanReply(reply) {
+  // Entfernen Sie Zeilenumbrüche, zusätzliche Anführungszeichen und Pluszeichen
+  let cleaned = reply
+    .replace(/\\n/g, ' ')  // Ersetze Zeilenumbrüche durch Leerzeichen
+    .replace(/^['"]|['"]$/g, '')  // Entferne Anführungszeichen am Anfang und Ende
+    .replace(/'\s*\+\s*'/g, '')  // Entferne Verkettungsoperatoren
+    .replace(/"\s*\+\s*"/g, '')  // Entferne auch doppelte Anführungszeichen bei Verkettung
+    .replace(/\s+/g, ' ')  // Reduziere mehrere Leerzeichen auf eines
+    .trim();  // Entferne Leerzeichen am Anfang und Ende
+
+  // Entferne verbleibende einzelne Anführungszeichen
+  cleaned = cleaned.replace(/'/g, '');
+
+  // Entferne verbleibende doppelte Anführungszeichen
+  cleaned = cleaned.replace(/"/g, '');
+
+
+  // Entfernen Sie alles nach dem ersten Vorkommen von '},
+  const endIndex = cleaned.indexOf('},');
+  if (endIndex !== -1) {
+    cleaned = cleaned.substring(0, endIndex);
+  }
+
+  return cleaned;
+}
 // Iterieren Sie durch jeden Eintrag in den Ergebnissen
 results.forEach(entry => {
   let permlink = entry.content.permlink.split('/').pop();
@@ -24,7 +49,7 @@ results.forEach(entry => {
 
       // Push the filtered entry into the replies array
       const cleanedSecondResult = entry.secondResult.replace(/!CHARY:\s+/, '!CHARY:');
-    
+
       // Extrahieren Sie den !CHARY Score aus dem bereinigten secondResult
       const charyScoreMatch = cleanedSecondResult.match(/!CHARY:(\d+)/);
       if (charyScoreMatch) {
@@ -35,7 +60,7 @@ results.forEach(entry => {
           replies.push({
             "author": author,
             "permlink": entry.content.permlink,
-            "Reply": cleanedSecondResult
+            "Reply": cleanReply(cleanedSecondResult)
           });
         }
       }
