@@ -17,16 +17,31 @@ function cleanReply(reply) {
     .replace(/'\s*\+\s*'/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-
   // Entfernen Sie alles nach dem ersten Vorkommen von '},
   const endIndex = cleaned.indexOf('},');
   if (endIndex !== -1) {
     cleaned = cleaned.substring(0, endIndex);
   }
-
   return cleaned;
 }
 
+// Funktion zum Überprüfen, ob ein Eintrag bereits verarbeitet wurde
+async function alreadyUpvoted(permlink) {
+  try {
+    const allreadyUpvotedJSONStr = fs.readFileSync('allreadyUpvoted.json', 'utf8');
+    const allreadyUpvotedData = JSON.parse(allreadyUpvotedJSONStr);
+    for (const entry of allreadyUpvotedData) {
+      console.log("entry.content.permlink.replace('https://peakd.com/@', '') = ", entry.content.permlink.replace('https://peakd.com/@', ''));
+      console.log("permlink = ", permlink);
+      if (entry.content.permlink.replace('https://peakd.com/@', '') === permlink) {
+        return true;
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return false;
+}
 
 
 // Funktion zum Posten eines Kommentars
@@ -105,6 +120,7 @@ function createUpvotedJSON(replies) {
   const upvotedJSON = [];
   for (const reply of replies) {
     const entry = {};
+    console.log('CreateUpvotedJson: Reply:', reply);
     //entry.entry = upvotedJSON.length + 1;
     entry.content = { author: reply.author, permlink: reply.permlink };
     entry.Upvotedate = new Date().toISOString();
@@ -155,28 +171,43 @@ function appendToFile(filename, newData) {
 
 // Durch die Antworten iterieren und Kommentare posten
 async function processReplies() {
+  const newReplies =[];
   for (const reply of replies) {
-    const author = reply.author;
-    const permlink = reply.permlink.split('@')[1];
-    const body = reply.Reply;
+    // Überprüfen, ob der Eintrag bereits verarbeitet wurde
+    console.log(reply);
+    const entry = {};
+    if (!await alreadyUpvoted(reply.permlink.split('@')[1])) {
+      // Entry has not been upvoted yet, add it to the newReplies array
+      const author = reply.author;
+      const permlink = reply.permlink.split('@')[1];
+      const body = reply.Reply;
+      console.log(`Eintrag ${permlink} noch nicht verarbeitet!`);
+      console.log(author, permlink, body);
+      // newReplies.push(({
+      //   content: { 
+      //     author: author,
+      //     permlink: permlink },
+      //   Upvotedate: new Date().toISOString(),
+      // }))
+      entry.content = { author: author, permlink: permlink };
+      entry.Upvotedate = new Date().toISOString();
+      newReplies.push(entry);
+      // Kommentar posten
+      //await postComment(author, permlink, body);
 
-    console.log(author, permlink, body);
+      // 10% Upvote senden
+      //await sendUpvote(author, permlink, 1000);
 
-    // Kommentar posten
-    //await postComment(author, permlink, body);
-
-    // 10% Upvote senden
-    //await sendUpvote(author, permlink, 1000);
-
-    // Optional: Pause zwischen den Kommentaren, um Rate-Limits zu vermeiden
-    await new Promise(resolve => setTimeout(resolve, 3000));
+      // Optional: Pause zwischen den Kommentaren, um Rate-Limits zu vermeiden
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
   }
+  // JSON-Datei mit den bereits geupvoteten Kommentaren erstellen
+  const upvotedJSONStr = createUpvotedJSON(newReplies);
+  appendToFile('allreadyUpvoted.json', newReplies);
 }
 
 // Skript ausführen
 processReplies().then(() => console.log('Alle Kommentare wurden verarbeitet.'));
 
 
-// JSON-Datei mit den bereits geupvoteten Kommentaren erstellen
-const upvotedJSONStr = createUpvotedJSON(replies);
-appendToFile('allreadyUpvoted.json', upvotedJSONStr);
