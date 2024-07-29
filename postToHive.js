@@ -65,12 +65,12 @@ async function postComment(author, permlink, body, chalk) {
 
 async function sendUpvote(author, permlink, weight, chalk) {
   try {
-    permlink = permlink.replace(/^[@/]+/, '');
-    const parts = permlink.split('/');
+    newPermlink = permlink.replace(/^[@/]+/, '');
+    const parts = newPermlink.split('/');
     const actualPermlink = parts.pop();
     const actualAuthor = parts.join('/');
 
-    console.log(chalk.blue(`Attempting to upvote: author=${actualAuthor}, permlink=${actualPermlink}`));
+    console.log(chalk.blue(`Attempting to upvote: author=${actualAuthor}, permlink=${permlink}`));
 
     const privateKey = PrivateKey.from(config.privateKey);
     await client.broadcast.vote({
