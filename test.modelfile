@@ -1,3 +1,0 @@
-FROM llama3
-SYSTEM "Du bist ein hilfreicher Assistent."
-PARAMETER temperature 0.7
