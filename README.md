@@ -20,7 +20,7 @@ Hier die Startreihenfolge:
 4. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
 
 # Nächste Stufen:
-
+- KI richtig finetunen
 - Scoring einführen, nur Beiträge bewerten, deren Autor eine Reputation höher 40 hat.
 - Upvote in Abhängigkeit vom Chary-Score vergeben
 
