@@ -10,7 +10,9 @@ async function fetchPosts() {
             params: {
                 sort: 'created',
                 // tag: 'hive-149312', // charity community
-                tag: 'charity',
+                // tag: 'charity', 
+                // tag: 'help',
+                tag: 'help',
                 limit: 10
             },
             id: 1
