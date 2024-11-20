@@ -1,10 +1,3 @@
-
-Hello everyone,
-
-Here are the 
-
-![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)
-
 # Charity Heroes Of Week 47:
 
 |Nr.|Chary Score|Author|url|image|
@@ -15,28 +8,27 @@ Here are the
 # What did they do?
 
 ## @worldmappin 
-The community is directly helping a member with financial difficulties due to a medical emergency, using funds and account earnings.
+Author:  Worldmappin (a community project)
+Here are the charity efforts mentioned in the text:
+'"* The community is raising funds to help a member, @ybanezkim26, who is facing financial difficulties due to his sister's medical emergency.
+"'* A bill of $4500 has been incurred for just two days of hospitalization.
+  * The community is using part of their funds and account earnings to support @ybanezkim26 in this difficult time.
+The ways to help are:
+'"* Upvote the post to send 100% of the Hive rewards to @ybanezkim26's account
+"'* Reblog the post to give it more visibility
+'"* Transfer some HBD or Hive tokens to @ybanezkim26's account
+"'* Send good thoughts and prayers to him and his family
 
 ## @elevator09 
-The author directly participated in organizing a charity event, donating money and Hive to various charitable organizations.
+Author: elevator09
+Charity actions:
+- Organized a small giveaway for a good purpose
+- Donated generated income from the contribution
+- Increased donation fund per participant by 5 Hive (up to a maximum of 100 Hive)
+- Will donate the generated income and increase the donation fund to support charitable projects
+- Listed charitable projects on the Hive platform
+Proofs:
+- Mentioned specific charitable accounts that will receive donations: @aliento. aid, @manujune, @coldbeetrootsoup, @kbv. animalwelf, @elkezaksek, @collinz, @papilloncharity, @hive. aid, @combination, and @hive. helps
+- Provided a link to the post where charitable projects were listed: [here](https://peakd.com/charity/@elevator09/charity-projects-on-the-hive-blockchain)
+- Mentioned using the website https: //wheelofnames. com/ to give each participant an equal chance to win
 
-
-
-# What you can do
-You can support the authors or the people, who are mentioned by the authors, with donations, upvotes, rebloggs, good comments, prayers and whatever you may think of.
-I want to, based on this report, start an advertising campaign in the next days. If you want to join, please follow @advertisingbot2 or the community [Hive Marketing](https://peakd.com/c/hive-154303/trending). There you can get a chance to earn a bit Hive by writing a sentence about these people. So stay tuned.
-
-![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23tSzWXZGdpaNXLfximVDLkYdX5rR1jUiQZpyTU4bvPAW2k1BRwq9XJ8jv48va3WqKJEZ.png)
-
-
-# What's About This Report
-I (@achimmertens) have created a few scripts, that download some posts from the Hive blockchain, read them with an AI bot and check them for charity content. If the score is high enough, then my bot @charitychecker writes a comment below the post. 
-One can use this comment to further process it, i.e. creating (regular) reports like this. Also everyone can see, that this post has been checked by an AI and by me (as a curator) for charity content ([More details see here](https://peakd.com/hive-149312/@charitychecker/charitychecker-my-introducemyself-deutschenglish)).
-
-
-![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23tSyz4YxBQNJcHeuR5JWdWDbJsWaGXvGNhRR6QtPg4R9SBvCBUDPK4VGRjwWYPuvzM8K.png)
-
-Let's make the world a little bit better.
-
-Regards,
-CharityChecker (alias @achimmertens)

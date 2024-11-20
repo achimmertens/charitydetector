@@ -39,19 +39,19 @@ results.forEach(entry => {
   let permlink = entry.content.permlink.split('/').pop();
   if (!allreadyUpvoted.find((upvoted) => upvoted.permlink === permlink)) {
 
-    // Check if the keyword "CHARY" is present in the result content
-    if (entry.secondResult.includes("CHARY")) {
+    // Check if AchimResult exists and includes "CHARY"
+    if (entry.AchimResult && entry.AchimResult.includes("CHARY")) {
       // Extract the author and permlink
       let author = entry.content.author;
 
       // Extract the reply content
-      let reply = entry.secondResult
+      let reply = entry.AchimResult
 
       // Push the filtered entry into the replies array
-      const cleanedSecondResult = entry.secondResult.replace(/!CHARY:\s+/, '!CHARY:');
+      const cleanedAchimResult = entry.AchimResult.replace(/!CHARY:\s+/, '!CHARY:');
 
-      // Extrahieren Sie den !CHARY Score aus dem bereinigten secondResult
-      const charyScoreMatch = cleanedSecondResult.match(/!CHARY:(\d+)/);
+      // Extrahieren Sie den !CHARY Score aus dem bereinigten AchimResult
+      const charyScoreMatch = cleanedAchimResult.match(/!CHARY:(\d+)/);
       if (charyScoreMatch) {
         const charyScore = parseInt(charyScoreMatch[1], 10);
 
@@ -60,13 +60,14 @@ results.forEach(entry => {
           replies.push({
             "author": author,
             "permlink": entry.content.permlink,
-            "Reply": cleanReply(cleanedSecondResult)
+            "Reply": cleanReply(cleanedAchimResult)
           });
         }
       }
     }
   }
 });
+
 
 // Save the new JSON file with the filtered entries
 fs.writeFileSync('replies.json', JSON.stringify(replies, null, 2));

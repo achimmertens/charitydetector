@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-// Read the JSON file
-const jsonData = fs.readFileSync('replies.json', 'utf8');
-const data = JSON.parse(jsonData);
+// Read the JSON files
+const repliesData = JSON.parse(fs.readFileSync('replies.json', 'utf8'));
+const resultsData = JSON.parse(fs.readFileSync('results_02.json', 'utf8'));
 
 // Function to extract Chary score
 function extractCharyScore(reply) {
@@ -10,28 +10,52 @@ function extractCharyScore(reply) {
   return match ? match[1] : 'N/A';
 }
 
+// Function to clean and format the text
+function cleanAndFormatText(text) {
+  return text
+    .replace(/^['"]|['"]$/g, '') // Remove leading and trailing quotes
+    .replace(/'\s*\+\s*'/g, '\n') // Replace ' + ' with newline
+    .replace(/"\s*\+\s*"/g, '\n') // Replace " + " with newline
+    .replace(/\\t/g, '  ') // Replace \t with two spaces
+    .replace(/\\n/g, '\n') // Replace \n with actual newline
+    .replace(/\s*\+\s*/g, '') // Remove any remaining '+' with spaces around them
+    .split('\n') // Split into lines
+    .map(line => line.trim()) // Trim each line
+    .filter(line => line !== '') // Remove empty lines
+    .map(line => {
+      line = line.replace(/['"]$/, ''); // Remove trailing quotes
+      if (line.startsWith('*')) {
+        return '  ' + line; // Add two spaces before bullet points
+      }
+      return line;
+    })
+    .join('\n') // Join back into a single string
+    .replace(/([.:])(\S)/g, '$1 $2') // Add space after periods and colons if missing
+    .replace(/\*\*/g, '') // Remove any remaining asterisks used for bold formatting
+    .trim(); // Final trim
+}
+
+// Create a map of authors to their firstResult
+const authorResults = {};
+resultsData.forEach(item => {
+  authorResults[item.content.author] = cleanAndFormatText(item.firstResult);
+});
+
 // Sort the data by CHARY score in descending order
-data.sort((a, b) => {
+repliesData.sort((a, b) => {
   const scoreA = parseInt(extractCharyScore(a.Reply)) || 0;
   const scoreB = parseInt(extractCharyScore(b.Reply)) || 0;
   return scoreB - scoreA;
 });
 
 // Generate the Markdown report
-let markdown = `
-Hello everyone,
-
-Here are the 
-
-![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)
-
-# Charity Heroes Of Week 47:
+let markdown = `# Charity Heroes Of Week 47:
 
 |Nr.|Chary Score|Author|url|image|
 |-|-|-|-|-|
 `;
 
-data.forEach((item, index) => {
+repliesData.forEach((item, index) => {
   const imageUrl = `https://images.hive.blog/0x0/https://files.peakd.com/file/peakd-hive/${item.author}/image.jpg`;
   const charyScore = extractCharyScore(item.Reply);
   markdown += `|${index + 1}.|${charyScore}|@${item.author}|${item.permlink}|${imageUrl}|\n`;
@@ -39,32 +63,11 @@ data.forEach((item, index) => {
 
 markdown += `\n# What did they do?\n\n`;
 
-data.forEach(item => {
-  const description = item.Reply.replace(/!CHARY:\d+\s*/, '').trim();
+repliesData.forEach(item => {
+  const description = authorResults[item.author] || item.Reply.replace(/!CHARY:\d+\s*/, '').trim();
   markdown += `## @${item.author} 
 ${description}\n\n`;
 });
-
-markdown += `\n
-# What you can do
-You can support the authors or the people, who are mentioned by the authors, with donations, upvotes, rebloggs, good comments, prayers and whatever you may think of.
-I want to, based on this report, start an advertising campaign in the next days. If you want to join, please follow @advertisingbot2 or the community [Hive Marketing](https://peakd.com/c/hive-154303/trending). There you can get a chance to earn a bit Hive by writing a sentence about these people. So stay tuned.
-
-![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23tSzWXZGdpaNXLfximVDLkYdX5rR1jUiQZpyTU4bvPAW2k1BRwq9XJ8jv48va3WqKJEZ.png)
-
-
-# What's About This Report
-I (@achimmertens) have created a few scripts, that download some posts from the Hive blockchain, read them with an AI bot and check them for charity content. If the score is high enough, then my bot @charitychecker writes a comment below the post. 
-One can use this comment to further process it, i.e. creating (regular) reports like this. Also everyone can see, that this post has been checked by an AI and by me (as a curator) for charity content ([More details see here](https://peakd.com/hive-149312/@charitychecker/charitychecker-my-introducemyself-deutschenglish)).
-
-
-![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23tSyz4YxBQNJcHeuR5JWdWDbJsWaGXvGNhRR6QtPg4R9SBvCBUDPK4VGRjwWYPuvzM8K.png)
-
-Let's make the world a little bit better.
-
-Regards,
-CharityChecker (alias @achimmertens)
-`
 
 // Write the Markdown to a file
 fs.writeFileSync('charity_heroes_report.md', markdown);
