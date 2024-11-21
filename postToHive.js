@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const { Client, PrivateKey } = require('@hiveio/dhive');
 const config = require('./hiveConfig.js');
+const path = require('path');
 
 // Hive client initialisieren
 const client = new Client('https://api.hive.blog');
@@ -35,7 +36,7 @@ function cleanReply(reply) {
 }
 
 async function alreadyUpvoted(permlink) {
-  const allreadyUpvotedData = await readJsonFile('allreadyUpvoted.json');
+  const allreadyUpvotedData = await readJsonFile('./reports/allreadyUpvoted.json');
   return allreadyUpvotedData.some(entry => 
     entry.content.permlink.replace('https://peakd.com/@', '') === permlink
   );
@@ -107,9 +108,9 @@ async function processReply(reply, chalk) {
   };
 }
 
-async function processReplies() {
+async function processReplies(inputFile) {
   const chalk = await loadChalk();
-  const replies = await readJsonFile('replies.json');
+  const replies = await readJsonFile(inputFile);
   const newReplies = [];
 
   for (const reply of replies) {
@@ -118,11 +119,26 @@ async function processReplies() {
   }
 
   if (newReplies.length > 0) {
-    const existingData = await readJsonFile('allreadyUpvoted.json');
+    const existingData = await readJsonFile('reports/allreadyUpvoted.json');
     await writeJsonFile('allreadyUpvoted.json', existingData.concat(newReplies));
   }
 
   console.log(chalk.magenta('All comments have been processed.'));
 }
 
-processReplies().catch(error => console.error('Error in main process:', error.message));
+async function main() {
+  const chalk = await loadChalk();
+
+  if (process.argv.length < 3) {
+    console.log(chalk.red('Error: No input file specified. Please start the process i.e. like this: "node postToHive.js reports/20241119_report.json"'));
+    console.log(chalk.yellow('Usage: node postToHive.js <input-file>'));
+    process.exit(1);
+  }
+
+  const inputFile = path.resolve(process.argv[2]);
+  console.log(chalk.cyan(`Processing file: ${inputFile}`));
+
+  await processReplies(inputFile);
+}
+
+main().catch(error => console.error('Error in main process:', error.message));

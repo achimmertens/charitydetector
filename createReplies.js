@@ -1,5 +1,5 @@
 const fs = require('fs');
-const allreadyUpvotedJSON = fs.readFileSync('./allreadyUpvoted.json');
+const allreadyUpvotedJSON = fs.readFileSync('./reports/allreadyUpvoted.json');
 
 // Load the existing JSON file
 let rawdata = fs.readFileSync('results_02.json');
@@ -60,7 +60,8 @@ results.forEach(entry => {
           replies.push({
             "author": author,
             "permlink": entry.content.permlink,
-            "Reply": cleanReply(cleanedAchimResult)
+            "Reply": cleanReply(cleanedAchimResult),
+            "firstResult": entry.firstResult
           });
         }
       }

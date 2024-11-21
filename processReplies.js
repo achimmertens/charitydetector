@@ -43,7 +43,8 @@ function processReplies() {
     const newEntries = replies.filter(reply => 
         !allReplies.some(existingReply => 
             existingReply.author === reply.author && 
-            existingReply.permlink === reply.permlink
+            existingReply.permlink === reply.permlink &&
+            existingReply.firstResult === reply.firstResult
         )
     );
 

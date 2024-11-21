@@ -16,11 +16,11 @@ ollama create charyllama3 --file Charyllama3.modelfile
 Hier die Startreihenfolge:
 1. node fetchhive.js (wobei hier ggf. die URL angepasst werden sollte) -> es entsteht contents.json mit den Posts und ein paar Meta-Feldern aus Hive.
 2. node process_contents.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results.json mit den Zusammenfassungen und results_02.json mit den Auswertungen der Posts.
-3. Manuell results_02.json überprüfen und die relevanten Zeilen "secondResult" duplizieren (Alt+Shift+Pfeilnachunten) und in "AchimResult" umbenennen und nach Wunsch anpassen.
+3. Manuell results_02.json überprüfen und die relevanten Zeilen "secondResult" duplizieren (Alt+Shift+Pfeilnachunten), in "AchimResult" umbenennen und nach Wunsch anpassen.
 4. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und replies.json gespeichert
-5. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt. Es wird ein tagesaktueller report.json erstellt.
+5. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt und es wird ein tagesaktueller report.json erstellt.
 6. .....
-7. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
+7. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
 8. node createCharityReport.js
 
 # Nächste Stufen:
