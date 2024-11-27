@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 // Function to read the JSON file
 function readJsonFile(filePath) {
@@ -60,6 +61,38 @@ reportData.sort((a, b) => {
     const scoreB = parseInt(extractCharyScore(b.Reply)) || 0;
     return scoreB - scoreA;
 });
+// Function to fetch the image URL from the post content
+function fetchImageUrlFromPost(permlink) {
+    return new Promise((resolve, reject) => {
+        const imageSource = permlink;
+        const jsonUrl = `https://hive.blog/${imageSource.replace('peakd.com', 'hive.blog')}.json`;
+
+        https.get(jsonUrl, (res) => {
+            let data = '';
+
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+
+            res.on('end', () => {
+                try {
+                    const jsonData = JSON.parse(data);
+                    const postBody = jsonData.post.body;
+                    const imageUrlMatch = postBody.match(/!\[.*?\]\((.*?)\)/);
+                    if (imageUrlMatch && imageUrlMatch[1]) {
+                        resolve(imageUrlMatch[1]);
+                    } else {
+                        resolve(null);
+                    }
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }).on('error', (error) => {
+            reject(error);
+        });
+    });
+}
 
 // Generate the Markdown report
 let markdown = `# Charity Heroes Report
@@ -68,25 +101,32 @@ let markdown = `# Charity Heroes Report
 |-|-|-|-|-|
 `;
 
-reportData.forEach((item, index) => {
-    const imageUrl = `https://images.hive.blog/0x0/https://files.peakd.com/file/peakd-hive/${item.author}/image.jpg`;
-    const charyScore = extractCharyScore(item.Reply);
-    markdown += `|${index + 1}.|${charyScore}|@${item.author}|${item.permlink}|![](${imageUrl})|\n`;
-});
+(async () => {
+    for (let [index, item] of reportData.entries()) {
+        try {
+            const imageUrl = await fetchImageUrlFromPost(item.permlink);
+            const charyScore = extractCharyScore(item.Reply);
+            markdown += `|${index + 1}.|${charyScore}|@${item.author}|${item.permlink}|![](${imageUrl || 'No image found'})|\n`;
+        } catch (error) {
+            console.error(`Error fetching image for ${item.author}:`, error);
+            markdown += `|${index + 1}.|${extractCharyScore(item.Reply)}|@${item.author}|${item.permlink}|Error fetching image|\n`;
+        }
+    }
 
-markdown += `\n# What did they do?\n\n`;
+    markdown += `\n# What did they do?\n\n`;
 
-reportData.forEach(item => {
-    const description = item.Reply.replace(/!CHARY:\d+\s*/, '').trim();
-    markdown += `## @${item.author} 
+    reportData.forEach(item => {
+        const description = item.Reply.replace(/!CHARY:\d+\s*/, '').trim();
+        markdown += `## @${item.author}
 ${cleanAndFormatText(description)}\n\n`;
-});
+    });
 
-// Generate output file name based on input file name
-const outputFileName = path.basename(inputFilePath, '.json') + '_report.md';
-const outputFilePath = path.join(path.dirname(inputFilePath), outputFileName);
-// Write the Markdown to a file
-fs.writeFileSync(outputFilePath, markdown);
+    // Generate output file name based on input file name
+    const outputFileName = path.basename(inputFilePath, '.json') + '_report.md';
+    const outputFilePath = path.join(path.dirname(inputFilePath), outputFileName);
+    // Write the Markdown to a file
+    fs.writeFileSync(outputFilePath, markdown);
 
-console.log(`Markdown report generated: ${outputFilePath}`);
-console.log(markdown);
+    console.log(`Markdown report generated: ${outputFilePath}`);
+    console.log(markdown);
+})();
