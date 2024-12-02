@@ -12,7 +12,7 @@ async function fetchPosts() {
                 // tag: 'hive-149312', // charity community
                 // tag: 'charity', 
                 // tag: 'help',
-                tag: 'help',
+                tag: 'charity',
                 limit: 10
             },
             id: 1

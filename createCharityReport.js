@@ -14,7 +14,7 @@ function readJsonFile(filePath) {
 
 // Check if a file path is provided as an argument
 if (process.argv.length < 3) {
-    console.error('Error: No input file specified.');
+    console.error('Error: No input file specified. Please start the process i.e. like this: "node createCharityReport.js reports/next_report.json"');
     console.log('Usage: node createCharityReport.js <path-to-report-file>');
     process.exit(1);
 }
@@ -78,12 +78,37 @@ function fetchImageUrlFromPost(permlink) {
                 try {
                     const jsonData = JSON.parse(data);
                     const postBody = jsonData.post.body;
-                    const imageUrlMatch = postBody.match(/!\[.*?\]\((.*?)\)/);
+
+                    // First, try to find an image in the ![](url) format
+                    let imageUrlMatch = postBody.match(/!\[.*?\]\((.*?)\)/);
                     if (imageUrlMatch && imageUrlMatch[1]) {
                         resolve(imageUrlMatch[1]);
-                    } else {
-                        resolve(null);
+                        return;
                     }
+
+                    // If not found, search for https://*.jpg
+                    imageUrlMatch = postBody.match(/(https:\/\/[^\s]+\.jpg)/);
+                    if (imageUrlMatch && imageUrlMatch[1]) {
+                        resolve(imageUrlMatch[1]);
+                        return;
+                    }
+                    // If not found, search for https://*.png
+                    imageUrlMatch = postBody.match(/(https:\/\/[^\s]+\.png)/);
+                    if (imageUrlMatch && imageUrlMatch[1]) {
+                        resolve(imageUrlMatch[1]);
+                        return;
+                    }
+
+                    // If not found, search for https://*.gif
+                    imageUrlMatch = postBody.match(/(https:\/\/[^\s]+\.gif)/);
+                    if (imageUrlMatch && imageUrlMatch[1]) {
+                        resolve(imageUrlMatch[1]);
+                        return;
+                    }
+                    
+
+                    // If still not found, resolve with null
+                    resolve(null);
                 } catch (error) {
                     reject(error);
                 }
@@ -105,8 +130,9 @@ let markdown = `# Charity Heroes Report
     for (let [index, item] of reportData.entries()) {
         try {
             const imageUrl = await fetchImageUrlFromPost(item.permlink);
-            const charyScore = extractCharyScore(item.Reply);
-            markdown += `|${index + 1}.|${charyScore}|@${item.author}|${item.permlink}|![](${imageUrl || 'No image found'})|\n`;
+           // const imageUrl = await extractFirstImageUrl(item.permlink);
+            const charyScore = extractCharyScore(item.Reply);//-
+            markdown += `|${index + 1}.|${charyScore}|@${item.author}|${item.permlink}|![](${imageUrl || 'No image found'})|\n`;//-
         } catch (error) {
             console.error(`Error fetching image for ${item.author}:`, error);
             markdown += `|${index + 1}.|${extractCharyScore(item.Reply)}|@${item.author}|${item.permlink}|Error fetching image|\n`;

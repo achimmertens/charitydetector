@@ -15,7 +15,7 @@ ollama create charyllama3 --file Charyllama3.modelfile
 # Aufruf der Scripte:
 Hier die Startreihenfolge:
 1. node fetchhive.js (wobei hier ggf. die URL angepasst werden sollte) -> es entsteht contents.json mit den Posts und ein paar Meta-Feldern aus Hive.
-2. node process_contents.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results.json mit den Zusammenfassungen und results_02.json mit den Auswertungen der Posts.
+2. node processContents.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results.json mit den Zusammenfassungen und results_02.json mit den Auswertungen der Posts.
 3. Manuell results_02.json überprüfen und die relevanten Zeilen "secondResult" duplizieren (Alt+Shift+Pfeilnachunten), in "AchimResult" umbenennen und nach Wunsch anpassen.
 4. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und replies.json gespeichert
 5. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt und es wird ein tagesaktueller report.json erstellt.
