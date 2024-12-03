@@ -6,12 +6,12 @@ Here are the
 ![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)
 
 # Charity Heroes Of Week 49:
-|Nr.|Chary Score|Author|url|image|
-|-|-|-|-|-|
-|1.|10|@ekojah|https://peakd.com/@ekojah/visiting-the-orphans-and-the-less-privileged-bf9|![](https://img.inleo.io/DQmcVU6SbUPRpjaiXBUVPaVNfcpVUT1TYb89ZuRaS7isxYN/1732107782140.jpg)|
-|2.|8|@tayo6|https://peakd.com/@tayo6/hospitals-blood-and-cells-my-november-highlight|![](https://files.peakd.com/file/peakd-hive/tayo6/23zbPm3MAsNE5Ca7DvZDiohPZPFYxt2Tmg42ofwUu9H1ihQPEtVNyqFq23dBi2zcrHDQa.jpg)|
-|3.|8|@hive.helps|https://peakd.com/@hive.helps/deen-hivehelps-november-update-4500-hbd-reached|![](https://files.peakd.com/file/peakd-hive/hive.helps/23tvaT72iJ9eZ5rwsvRmd7rBcJ9wT78vowGqZgWASE7aBVpXPESMEX3oKa4bHNqfLnaro.png)|
-|4.|5|@kingsleyy|https://peakd.com/@kingsleyy/tipping-culture|![](https://images.ecency.com/DQmNb7GCqzm9WuinFcFN98PwQF2Cczw7nNsnHJNeL1aLaeD/1001468792.jpg)|
+|Nr.|Chary Score|Author|Reputation|url|image|
+|-|-|-|-|-|-|
+|1.|10|@ekojah|5876|https://peakd.com/@ekojah/visiting-the-orphans-and-the-less-privileged-bf9|![](https://img.inleo.io/DQmcVU6SbUPRpjaiXBUVPaVNfcpVUT1TYb89ZuRaS7isxYN/1732107782140.jpg)|
+|2.|8|@tayo6|5182|https://peakd.com/@tayo6/hospitals-blood-and-cells-my-november-highlight|![](https://files.peakd.com/file/peakd-hive/tayo6/23zbPm3MAsNE5Ca7DvZDiohPZPFYxt2Tmg42ofwUu9H1ihQPEtVNyqFq23dBi2zcrHDQa.jpg)|
+|3.|8|@hive.helps|18077|https://peakd.com/@hive.helps/deen-hivehelps-november-update-4500-hbd-reached|![](https://files.peakd.com/file/peakd-hive/hive.helps/23tvaT72iJ9eZ5rwsvRmd7rBcJ9wT78vowGqZgWASE7aBVpXPESMEX3oKa4bHNqfLnaro.png)|
+|4.|5|@kingsleyy|167526|https://peakd.com/@kingsleyy/tipping-culture|![](https://images.ecency.com/DQmNb7GCqzm9WuinFcFN98PwQF2Cczw7nNsnHJNeL1aLaeD/1001468792.jpg)|
 
 # What did they do?
 

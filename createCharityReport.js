@@ -71,10 +71,11 @@ reportData.sort((a, b) => {
     return scoreB - scoreA;
 });
 // Function to fetch the image URL from the post content
-function fetchImageUrlFromPost(permlink) {
+
+function fetchPostData(permlink) {//+
     return new Promise((resolve, reject) => {
-        const imageSource = permlink;
-        const jsonUrl = `https://hive.blog/${imageSource.replace('peakd.com', 'hive.blog')}.json`;
+
+        const jsonUrl = `https://hive.blog/${permlink.replace('peakd.com', 'hive.blog')}.json`;//+
 
         https.get(jsonUrl, (res) => {
             let data = '';
@@ -87,37 +88,26 @@ function fetchImageUrlFromPost(permlink) {
                 try {
                     const jsonData = JSON.parse(data);
                     const postBody = jsonData.post.body;
+                    const authorReputation = Math.floor(jsonData.post.author_reputation / 1000000000);
 
-                    // First, try to find an image in the ![](url) format
+                    // First, try to find an image in the ![](url) format//-
+                    // Search for image URL//+
+                    let imageUrl = null;//+
                     let imageUrlMatch = postBody.match(/!\[.*?\]\((.*?)\)/);
                     if (imageUrlMatch && imageUrlMatch[1]) {
-                        resolve(imageUrlMatch[1]);
-                        return;
+                        imageUrl = imageUrlMatch[1];//+
+                    } else {//+
+                        imageUrlMatch = postBody.match(/(https:\/\/[^\s]+\.(jpg|jpeg|png|gif|webp|bmp))/i);
+                        if (imageUrlMatch && imageUrlMatch[1]) {//+
+                            imageUrl = imageUrlMatch[1];//+
+                        }//+
                     }
 
-                    // If not found, search for https://*.jpg
-                    imageUrlMatch = postBody.match(/(https:\/\/[^\s]+\.jpg)/);
-                    if (imageUrlMatch && imageUrlMatch[1]) {
-                        resolve(imageUrlMatch[1]);
-                        return;
-                    }
-                    // If not found, search for https://*.png
-                    imageUrlMatch = postBody.match(/(https:\/\/[^\s]+\.png)/);
-                    if (imageUrlMatch && imageUrlMatch[1]) {
-                        resolve(imageUrlMatch[1]);
-                        return;
-                    }
-
-                    // If not found, search for https://*.gif
-                    imageUrlMatch = postBody.match(/(https:\/\/[^\s]+\.gif)/);
-                    if (imageUrlMatch && imageUrlMatch[1]) {
-                        resolve(imageUrlMatch[1]);
-                        return;
-                    }
-                    
-
-                    // If still not found, resolve with null
-                    resolve(null);
+-
+                    resolve({//+
+                        imageUrl: imageUrl,//+
+                        authorReputation: authorReputation//+
+                    });//+
                 } catch (error) {
                     reject(error);
                 }
@@ -138,22 +128,24 @@ Here are the
 ![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)
 
 # Charity Heroes Of Week ${currentWeek}:
-|Nr.|Chary Score|Author|url|image|
-|-|-|-|-|-|
+|Nr.|Chary Score|Author|Reputation|url|image|
+|-|-|-|-|-|-|
 `;
+
 
 (async () => {
     for (let [index, item] of reportData.entries()) {
         try {
-            const imageUrl = await fetchImageUrlFromPost(item.permlink);
-           // const imageUrl = await extractFirstImageUrl(item.permlink);
-            const charyScore = extractCharyScore(item.Reply);//-
-            markdown += `|${index + 1}.|${charyScore}|@${item.author}|${item.permlink}|![](${imageUrl || 'No image found'})|\n`;//-
+
+            const postData = await fetchPostData(item.permlink);//+
+            const charyScore = extractCharyScore(item.Reply);//+
+            markdown += `|${index + 1}.|${charyScore}|@${item.author}|${postData.authorReputation}|${item.permlink}|![](${postData.imageUrl || 'No image found'})|\n`;//+
         } catch (error) {
-            console.error(`Error fetching image for ${item.author}:`, error);
-            markdown += `|${index + 1}.|${extractCharyScore(item.Reply)}|@${item.author}|${item.permlink}|Error fetching image|\n`;
+            console.error(`Error fetching data for ${item.author}:`, error);//+
+            markdown += `|${index + 1}.|${extractCharyScore(item.Reply)}|@${item.author}|N/A|${item.permlink}|Error fetching data|\n`;//+
         }
     }
+// {"source":"chat"}
 
     markdown += `\n# What did they do?\n\n`;
 
