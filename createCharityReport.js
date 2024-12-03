@@ -2,6 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+// Function to get the current week number
+function getCurrentWeek() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 1);
+    const diff = now - start;
+    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+    return Math.ceil((diff + start.getTimezoneOffset() * 60 * 1000) / oneWeek);
+  }
+
 // Function to read the JSON file
 function readJsonFile(filePath) {
     try {
@@ -120,8 +129,15 @@ function fetchImageUrlFromPost(permlink) {
 }
 
 // Generate the Markdown report
+const currentWeek = getCurrentWeek();
 let markdown = `# Charity Heroes Report
+Hello everyone,
 
+Here are the 
+
+![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)
+
+# Charity Heroes Of Week ${currentWeek}:
 |Nr.|Chary Score|Author|url|image|
 |-|-|-|-|-|
 `;
@@ -146,6 +162,21 @@ let markdown = `# Charity Heroes Report
         markdown += `## @${item.author}
 ${cleanAndFormatText(description)}\n\n`;
     });
+
+    markdown += `\n# Call to action\n\n`
+    markdown += "![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/Eo2BSgYeC4RZVPxTbUwe7PLwA9TAYhDwgqTRvFucPpWbop9KqwSm9UMJSakh24ojRUd.png)";
+    markdown += `\n# What's about this report?\n\n`
+    markdown += "![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/Eo2BSgYeC4RZVPxTbUwe7PLwA9TAYhDwgqTRvFucPpWbop9KqwSm9UMJSakh24ojRUd.png)";
+    markdown += `\n# Links to follow:
+    \n* [Achim Mertens](https://peakd.com/@achimmertens)
+    \n* [CharityChecker](https://peakd.com/@charitychecker)
+    \n* [About Charitychecker](https://peakd.com/hive-149312/@charitychecker/charitychecker-my-introducemyself-deutschenglish)
+    \n* [Hive Marketing](https://peakd.com/c/hive-154303/trending)
+    \n* [Advertisingbot2](https://peakd.com/@advertisingbot2)
+    \n\n Let's make the world a little bit better.
+    \nRegards,
+    CharityChecker (alias @achimmertens)
+    `;
 
     // Generate output file name based on input file name
     const outputFileName = path.basename(inputFilePath, '.json') + '_report.md';

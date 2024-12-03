@@ -1,5 +1,11 @@
 # Charity Heroes Report
+Hello everyone,
 
+Here are the 
+
+![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)
+
+# Charity Heroes Of Week 49:
 |Nr.|Chary Score|Author|url|image|
 |-|-|-|-|-|
 |1.|10|@ekojah|https://peakd.com/@ekojah/visiting-the-orphans-and-the-less-privileged-bf9|![](https://img.inleo.io/DQmcVU6SbUPRpjaiXBUVPaVNfcpVUT1TYb89ZuRaS7isxYN/1732107782140.jpg)|
@@ -21,3 +27,28 @@ The author of the text is collecting money to spend on different charitable orga
 ## @kingsleyy
 The author explicitly described a direct and generous act of paying two young boys for their work.
 
+
+# Call to action
+
+![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/Eo2BSgYeC4RZVPxTbUwe7PLwA9TAYhDwgqTRvFucPpWbop9KqwSm9UMJSakh24ojRUd.png)
+# What's about this report?
+
+![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/Eo2BSgYeC4RZVPxTbUwe7PLwA9TAYhDwgqTRvFucPpWbop9KqwSm9UMJSakh24ojRUd.png)
+# Links to follow:
+    
+* [Achim Mertens](https://peakd.com/@achimmertens)
+    
+* [CharityChecker](https://peakd.com/@charitychecker)
+    
+* [About Charitychecker](https://peakd.com/hive-149312/@charitychecker/charitychecker-my-introducemyself-deutschenglish)
+    
+* [Hive Marketing](https://peakd.com/c/hive-154303/trending)
+    
+* [Advertisingbot2](https://peakd.com/@advertisingbot2)
+    
+
+ Let's make the world a little bit better.
+    
+Regards,
+    CharityChecker (alias @achimmertens)
+    
