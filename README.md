@@ -18,9 +18,8 @@ Hier die Startreihenfolge:
    1. fetchHive.js -> "./reports/posts_YYMMDD_charity.json" + "/.reports/posts_YYMMDD_help.json" mit den Posts und ein paar Meta-Feldern aus Hive.
    2. processContent.js -> "./reports/results_YYMMDD_charity.json" + "/.reports/results_YYMMDD_help.json" -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Die Dateien beinhalten Zusammenfassungen und Auswertungen der Posts.
 2. Manuell "./reports/results_YYMMDD_charity.json" + "/.reports/results_YYMMDD_help.json" überprüfen und die relevanten Zeilen "secondResult" duplizieren (Alt+Shift+Pfeilnachunten), in "AchimResult" umbenennen und nach Wunsch anpassen.
+3. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und reports/replies_YYMMDD.json gespeichert
 
-
-3. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und replies.json gespeichert
 4. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt und es wird ein tagesaktueller report.json erstellt.
 5. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
 6. Die letzten Reports sammeln (z.B. in nextreports.json)

@@ -1,19 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
-// Function to read JSON file
+// Utility function to read JSON file
 function readJsonFile(filePath) {
-    try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            return [];
-        }
-        throw error;
+    if (fs.existsSync(filePath)) {
+        const rawData = fs.readFileSync(filePath);
+        return JSON.parse(rawData);
     }
+    return [];
 }
 
-// Function to write JSON file
+// Utility function to write JSON file
 function writeJsonFile(filePath, data) {
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
@@ -32,34 +29,59 @@ function getCurrentDate() {
 
 // Main function
 function processReplies() {
-    const repliesPath = 'replies.json';
     const allRepliesPath = 'reports/allreplies.json';
-    const dailyReportPath = `reports/${getCurrentDate()}_report.json`;
-
-    const replies = readJsonFile(repliesPath);
     const allReplies = readJsonFile(allRepliesPath);
+
+    // Get the oldest date from allreplies.json
+    const oldestReplyDate = new Date(allReplies[allReplies.length - 1].replyDate);
+    console.log(`Oldest Reply Date: ${oldestReplyDate}`);
+
+    // Read all reply files in the ./reports directory
+    const resultsDir = './reports';
+    const replyFiles = fs.readdirSync(resultsDir).filter(file => {
+        const match = file.match(/^replies_(\d{6})\.json$/);
+        if (match) {
+            const fileDate = new Date(`20${match[1].slice(0, 2)}-${match[1].slice(2, 4)}-${match[1].slice(4, 6)}`);
+            console.log(`Found file: ${file} with date: ${fileDate}`);
+            return fileDate > oldestReplyDate;
+        }
+        return false;
+    });
+    console.log(`Reply Files: ${replyFiles}`);
+
+    // Combine the replies from all matching files
+    let replies = [];
+    replyFiles.forEach(file => {
+        const rawData = fs.readFileSync(path.join(resultsDir, file));
+        const parsedData = JSON.parse(rawData);
+        console.log(`Parsed ${file}: ${parsedData.length} entries`);
+        replies = replies.concat(parsedData);
+    });
+    console.log(`Combined Replies: ${replies.length} entries`);
+
+    const dailyReportPath = `reports/${getCurrentDate()}_report.json`;
     const dailyReport = readJsonFile(dailyReportPath);
 
-    const newEntries = replies.filter(reply => 
-        !allReplies.some(existingReply => 
-            existingReply.author === reply.author && 
-            existingReply.permlink === reply.permlink &&
-            existingReply.firstResult === reply.firstResult
-        )
-    );
+    const newEntries = replies.filter(reply => {
+        return !allReplies.some(existingReply => existingReply.content && existingReply.content.permlink === reply.permlink);
+    });
 
-    if (newEntries.length > 0) {
-        allReplies.push(...newEntries);
-        dailyReport.push(...newEntries);
+    console.log(`New Entries: ${newEntries.length} entries`);
 
-        writeJsonFile(allRepliesPath, allReplies);
-        writeJsonFile(dailyReportPath, dailyReport);
+    // Update allreplies.json and daily report
+    const updatedAllReplies = allReplies.concat(newEntries.map(reply => ({
+        content: {
+            author: reply.author,
+            permlink: reply.permlink,
+            Reply: reply.reply,
+            firstResult: reply.firstResult
+        },
+        replyDate: new Date().toISOString()
+    })));
+    writeJsonFile(allRepliesPath, updatedAllReplies);
+    writeJsonFile(dailyReportPath, newEntries);
 
-        console.log(`Added ${newEntries.length} new entries.`);
-    } else {
-        console.log('No new entries to add.');
-    }
+    console.log(`Replies processed and saved to ${allRepliesPath} and ${dailyReportPath}`);
 }
 
-// Run the process
 processReplies();
