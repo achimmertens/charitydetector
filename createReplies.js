@@ -21,7 +21,6 @@ const resultFiles = fs.readdirSync(resultsDir).filter(file => {
     if (match) {
         const fileDate = new Date(`20${match[1].slice(0, 2)}-${match[1].slice(2, 4)}-${match[1].slice(4, 6)}`);
         console.log(`Found file: ${file} with date: ${fileDate}`);
-        console.log(`Comparing file date ${fileDate} with latest upvote date ${latestUpvoteDate}`);
         return fileDate >= latestUpvoteDate;
     }
     return false;

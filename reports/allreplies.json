@@ -64,14 +64,5 @@
       "firstResult": "t: 19.12.2024, 07:25:30\nEnde Zeit: 19.12.2024, 07:27:00\n{\n  model: 'charyllama3',\n  created_at: '2024-12-19T06:27:00.9469119Z',\n  message: {\n    role: 'assistant',\n    content: \"Author: CharityChecker (note: the actual author of the text is not provided, but I assume it's a charity-related post)\n\" +\n      '\n' +\n      'Summary:\n' +\n      '\n' +\n      'The author has built a water tank, which is a great Christmas present. This means that people no longer have to carry every liter of water up the mountain.\n' +\n      '\n' +\n      'Proofs:\n' +\n      '- Photos of the water tank (5 images)\n' +\n      '- A link to a YouTube video showing how difficult it is to carry things up the mountain\n' +\n      '- Links to a GoFundMe page and a Hive blog post about their Uganda project\n' +\n      '\n' +\n      '!CHARY: 8\n' +\n      'The author has built a water tank, which directly helps people alleviate hardship by providing access to clean water.'"
     },
     "replyDate": "2024-12-19T06:41:04.123Z"
-  },
-  {
-    "content": {
-      "author": "glaxxzboi",
-      "permlink": "https://peakd.com/@glaxxzboi/my-trip-to-lagos-as-an-upcoming-artist-glaxxzboi",
-      "Reply": "!CHARY:5 The author, Glaxxzboi, directly helped someone by compensating the person who gave him a place to stay.",
-      "firstResult": "**Author: Glaxxzboi**\n' +\n      '\n' +\n      'Here are the charity actions and proofs of it mentioned in the text:\n' +\n      '\n' +\n      '* The author, Glaxxzboi, was given a place to stay by someone who accepted him into their house after he spent a night outside with mosquitoes.\n' +\n      '* He quickly rushed to do his CV and look for a job, and eventually got hired as a janitor at Pinefield School in Christ Avenue, Lekki Phase I.\n' +\n      '* From the salary he received every month, he compensated the person who helped him by giving them money.\n' +\n      '\n' +\n      \"These actions demonstrate Glaxxzboi's gratitude towards others and his willingness to help those in need.\""
-    },
-    "replyDate": "2025-01-16T12:15:35.003Z"
   }
 ]
