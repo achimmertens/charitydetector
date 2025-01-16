@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 const util = require('util');
 const exec = require('child_process').exec;
 const execPromise = util.promisify(exec);
+const path = require('path');
 
 function extractContent(output) {
     const startMarker = "content: '";
@@ -18,15 +19,16 @@ function formatPermlink(author, oldPermlink) {
     return `https://peakd.com/@${author}/${oldPermlink}`;
 }
 
-async function processContents() {
+async function processContents(filePath) {
     try {
-        // Lese contents.json
-        console.log('Lese contents.json...');
-        const contentsRaw = await fs.readFile('contents.json', 'utf8');
+        // Lese die angegebene Datei
+        console.log(`Lese ${filePath}...`);
+        const contentsRaw = await fs.readFile(filePath, 'utf8');
         const contents = JSON.parse(contentsRaw);
         
         // Datei für Ergebnisse erstellen
-        const resultsFile = 'results_02.json';
+        const tag = path.basename(filePath).split('_')[2].split('.')[0];
+        const resultsFile = `results_${tag}.json`;
         let results = [];
 
         // Iteriere durch jeden Eintrag
@@ -88,10 +90,18 @@ async function processContents() {
             console.log('------------------------------------');
         }
 
-        console.log('Alle Einträge wurden verarbeitet.');
+        // Speichere die Ergebnisse
+        await fs.writeFile(resultsFile, JSON.stringify(results, null, 2));
+        console.log(`Ergebnisse gespeichert in ${resultsFile}`);
     } catch (error) {
-        console.error('Ein Fehler ist aufgetreten:', error);
+        console.error(`Error processing contents: ${error.message}`);
     }
 }
 
-processContents();
+// Hole den Dateipfad aus den Kommandozeilenargumenten
+const filePath = process.argv[2];
+if (filePath) {
+    processContents(filePath);
+} else {
+    console.error('Bitte geben Sie den Pfad zur Datei als Parameter an.');
+}

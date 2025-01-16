@@ -1,6 +1,8 @@
 const axios = require('axios');
 const fs = require('fs').promises;
 
+const tag = process.argv[2] || 'charity'; // Get tag from command line arguments or default to 'charity'
+
 async function fetchPosts() {
     try {
         // API-Anfrage, um die letzten 10 Posts zu erhalten
@@ -9,10 +11,7 @@ async function fetchPosts() {
             method: 'bridge.get_ranked_posts',
             params: {
                 sort: 'created',
-                // tag: 'hive-149312', // charity community
-                // tag: 'charity', 
-                // tag: 'help',
-                tag: 'charity',
+                tag: tag, // Use the tag from command line arguments
                 limit: 10
             },
             id: 1
@@ -25,11 +24,14 @@ async function fetchPosts() {
             body: post.body
         }));
 
-        // JSON-Datei speichern
-        await fs.writeFile('contents.json', JSON.stringify(contents, null, 2), 'utf8');
-        console.log('Die Inhalte wurden erfolgreich in contents.json gespeichert.');
+        // Save the posts to a file
+        const date = new Date();
+        const formattedDate = date.toISOString().slice(2, 10).replace(/-/g, '');
+        const filePath = `./reports/posts_${formattedDate}_${tag}.json`;
+        await fs.writeFile(filePath, JSON.stringify(contents, null, 2));
+        console.log(`Posts saved to ${filePath}`);
     } catch (error) {
-        console.error('Ein Fehler ist aufgetreten:', error);
+        console.error(`Error fetching posts: ${error.message}`);
     }
 }
 

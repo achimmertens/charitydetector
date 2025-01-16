@@ -20,10 +20,11 @@ Hier die Startreihenfolge:
 4. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und replies.json gespeichert
 5. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt und es wird ein tagesaktueller report.json erstellt.
 6. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
-7. node createCharityReport.js reports/next_report.json
-8. Den Report anschauen. Wenn er gefällt, umbenennen in reports/yyyymmdd_report.md 
-9. Den Report hochladen mit node postReportToHive.js reports/yyyymmdd_report.md
-10. Ergebnis checken und rebloggen.
+7. Die letzten Reports sammeln (z.B. in nextreports.json)
+8. node createCharityReport.js reports/next_report.json
+9. Den Report anschauen. Wenn er gefällt, umbenennen in reports/yyyymmdd_report.md 
+10. Den Report hochladen mit node postReportToHive.js reports/yyyymmdd_report.md
+11. Ergebnis checken und rebloggen.
 
 # Nächste Stufen:
 - Die positiven Beiträge aus results_2.json kopieren und in eine "nextReport.json" übertragen. Dafür sorgen, dass Beiträge eindeutig sind.
