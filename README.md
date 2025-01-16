@@ -14,17 +14,20 @@ ollama create charyllama3 --file Charyllama3.modelfile
 
 # Aufruf der Scripte:
 Hier die Startreihenfolge:
-1. node fetchhive.js (wobei hier ggf. die URL angepasst werden sollte) -> es entsteht contents.json mit den Posts und ein paar Meta-Feldern aus Hive.
-2. node processContents.js -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Es entsteht results.json mit den Zusammenfassungen und results_02.json mit den Auswertungen der Posts.
-3. Manuell results_02.json überprüfen und die relevanten Zeilen "secondResult" duplizieren (Alt+Shift+Pfeilnachunten), in "AchimResult" umbenennen und nach Wunsch anpassen.
-4. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und replies.json gespeichert
-5. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt und es wird ein tagesaktueller report.json erstellt.
-6. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
-7. Die letzten Reports sammeln (z.B. in nextreports.json)
-8. node createCharityReport.js reports/next_report.json
-9. Den Report anschauen. Wenn er gefällt, umbenennen in reports/yyyymmdd_report.md 
-10. Den Report hochladen mit node postReportToHive.js reports/yyyymmdd_report.md
-11. Ergebnis checken und rebloggen.
+1. node daily_checks.js laufen lassen. Es startet:
+   1. fetchHive.js -> "./reports/posts_YYMMDD_charity.json" + "/.reports/posts_YYMMDD_help.json" mit den Posts und ein paar Meta-Feldern aus Hive.
+   2. processContent.js -> "./reports/results_YYMMDD_charity.json" + "/.reports/results_YYMMDD_help.json" -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Die Dateien beinhalten Zusammenfassungen und Auswertungen der Posts.
+2. Manuell "./reports/results_YYMMDD_charity.json" + "/.reports/results_YYMMDD_help.json" überprüfen und die relevanten Zeilen "secondResult" duplizieren (Alt+Shift+Pfeilnachunten), in "AchimResult" umbenennen und nach Wunsch anpassen.
+
+
+3. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und replies.json gespeichert
+4. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt und es wird ein tagesaktueller report.json erstellt.
+5. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
+6. Die letzten Reports sammeln (z.B. in nextreports.json)
+7.  node createCharityReport.js reports/next_report.json
+8.  Den Report anschauen. Wenn er gefällt, umbenennen in reports/yyyymmdd_report.md 
+9.  Den Report hochladen mit node postReportToHive.js reports/yyyymmdd_report.md
+10. Ergebnis checken und rebloggen.
 
 # Nächste Stufen:
 - Die positiven Beiträge aus results_2.json kopieren und in eine "nextReport.json" übertragen. Dafür sorgen, dass Beiträge eindeutig sind.

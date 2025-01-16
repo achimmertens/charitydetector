@@ -5,14 +5,14 @@ const tag = process.argv[2] || 'charity'; // Get tag from command line arguments
 
 async function fetchPosts() {
     try {
-        // API-Anfrage, um die letzten 10 Posts zu erhalten
+        // API-Anfrage, um die letzten n (siehe "limit") Posts zu erhalten
         const response = await axios.post('https://api.hive.blog', {
             jsonrpc: '2.0',
             method: 'bridge.get_ranked_posts',
             params: {
                 sort: 'created',
                 tag: tag, // Use the tag from command line arguments
-                limit: 10
+                limit: 1 // Anzahl der Posts, die abgerufen werden sollen
             },
             id: 1
         });

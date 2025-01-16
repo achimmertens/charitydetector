@@ -28,7 +28,9 @@ async function processContents(filePath) {
         
         // Datei für Ergebnisse erstellen
         const tag = path.basename(filePath).split('_')[2].split('.')[0];
-        const resultsFile = `results_${tag}.json`;
+        const date = new Date();
+        const formattedDate = date.toISOString().slice(2, 10).replace(/-/g, '');
+        const resultsFile = `./reports/results_${formattedDate}_${tag}.json`;
         let results = [];
 
         // Iteriere durch jeden Eintrag

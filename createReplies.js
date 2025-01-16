@@ -1,76 +1,71 @@
 const fs = require('fs');
-const allreadyUpvotedJSON = fs.readFileSync('./reports/allreadyUpvoted.json');
+const path = require('path');
 
-// Load the existing JSON file
-let rawdata = fs.readFileSync('results_02.json');
-let results = JSON.parse(rawdata);
-let allreadyUpvoted = JSON.parse(allreadyUpvotedJSON);
+// Load the existing JSON files
+const allreadyUpvotedJSON = fs.readFileSync('./reports/allreadyUpvoted.json');
+const allreadyUpvoted = JSON.parse(allreadyUpvotedJSON);
+
+// Get the latest Upvotedate
+const latestUpvoteDate = new Date(allreadyUpvoted[allreadyUpvoted.length - 1].Upvotedate);
+
+// Get the current date formatted as YYMMDD
+const date = new Date();
+const formattedDate = date.toISOString().slice(2, 10).replace(/-/g, '');
+
+// Read all results files in the ./reports directory
+const resultsDir = './reports';
+const resultFiles = fs.readdirSync(resultsDir).filter(file => {
+    const match = file.match(/^results_(\d{6})_(charity|help)\.json$/);
+    if (match) {
+        const fileDate = new Date(`20${match[1].slice(0, 2)}-${match[1].slice(2, 4)}-${match[1].slice(4, 6)}`);
+        return fileDate <= latestUpvoteDate;
+    }
+    return false;
+});
+
+// Combine the results from all matching files
+let results = [];
+resultFiles.forEach(file => {
+    const rawData = fs.readFileSync(path.join(resultsDir, file));
+    const parsedData = JSON.parse(rawData);
+    results = results.concat(parsedData);
+});
 
 // Initialize an array to store the filtered entries
 let replies = [];
 
 function cleanReply(reply) {
-  // Entfernen Sie Zeilenumbrüche, zusätzliche Anführungszeichen und Pluszeichen
-  let cleaned = reply
-    .replace(/\\n/g, ' ')  // Ersetze Zeilenumbrüche durch Leerzeichen
-    .replace(/^['"]|['"]$/g, '')  // Entferne Anführungszeichen am Anfang und Ende
-    .replace(/'\s*\+\s*'/g, '')  // Entferne Verkettungsoperatoren
-    .replace(/"\s*\+\s*"/g, '')  // Entferne auch doppelte Anführungszeichen bei Verkettung
-    .replace(/\s+/g, ' ')  // Reduziere mehrere Leerzeichen auf eines
-    .trim();  // Entferne Leerzeichen am Anfang und Ende
+    // Entfernen Sie Zeilenumbrüche, zusätzliche Anführungszeichen und Pluszeichen
+    let cleaned = reply
+        .replace(/\\n/g, ' ')  // Ersetze Zeilenumbrüche durch Leerzeichen
+        .replace(/^['"]|['"]$/g, '')  // Entferne Anführungszeichen am Anfang und Ende
+        .replace(/'\s*\+\s*'/g, '')  // Entferne Verkettungsoperatoren
+        .replace(/"\s*\+\s*"/g, '')  // Entferne auch doppelte Anführungszeichen bei Verkettung
+        .replace(/\s+/g, ' ')  // Reduziere mehrere Leerzeichen auf eines
+        .trim();  // Entferne Leerzeichen am Anfang und Ende
 
-  // Entferne verbleibende einzelne Anführungszeichen
-  cleaned = cleaned.replace(/'/g, '');
+    // Entferne verbleibende einzelne Anführungszeichen
+    cleaned = cleaned.replace(/'/g, '');
 
-  // Entferne verbleibende doppelte Anführungszeichen
-  cleaned = cleaned.replace(/"/g, '');
+    // Entferne verbleibende doppelte Anführungszeichen
+    cleaned = cleaned.replace(/"/g, '');
 
-
-  // Entfernen Sie alles nach dem ersten Vorkommen von '},
-  const endIndex = cleaned.indexOf('},');
-  if (endIndex !== -1) {
-    cleaned = cleaned.substring(0, endIndex);
-  }
-
-  return cleaned;
+    return cleaned;
 }
-// Iterieren Sie durch jeden Eintrag in den Ergebnissen
+
+// Filter the results and create replies
 results.forEach(entry => {
-  let permlink = entry.content.permlink.split('/').pop();
-  if (!allreadyUpvoted.find((upvoted) => upvoted.permlink === permlink)) {
-
-    // Check if AchimResult exists and includes "CHARY"
-    if (entry.AchimResult && entry.AchimResult.includes("CHARY")) {
-      // Extract the author and permlink
-      let author = entry.content.author;
-
-      // Extract the reply content
-      let reply = entry.AchimResult
-
-      // Push the filtered entry into the replies array
-      const cleanedAchimResult = entry.AchimResult.replace(/!CHARY:\s+/, '!CHARY:');
-
-      // Extrahieren Sie den !CHARY Score aus dem bereinigten AchimResult
-      const charyScoreMatch = cleanedAchimResult.match(/!CHARY:(\d+)/);
-      if (charyScoreMatch) {
-        const charyScore = parseInt(charyScoreMatch[1], 10);
-
-        // Überprüfen Sie, ob der Score größer als 4 ist
-        if (charyScore > 4) {
-          replies.push({
-            "author": author,
-            "permlink": entry.content.permlink,
-            "Reply": cleanReply(cleanedAchimResult),
-            "firstResult": entry.firstResult
-          });
-        }
-      }
+    if (entry.secondResult) {
+        const cleanedReply = cleanReply(entry.secondResult);
+        replies.push({
+            author: entry.content.author,
+            permlink: entry.content.permlink,
+            reply: cleanedReply
+        });
     }
-  }
 });
 
-
-// Save the new JSON file with the filtered entries
-fs.writeFileSync('replies.json', JSON.stringify(replies, null, 2));
-
-console.log("New JSON file 'replies.json' has been created.");
+// Write the replies to a new file
+const repliesFilePath = path.join(resultsDir, `replies_${formattedDate}.json`);
+fs.writeFileSync(repliesFilePath, JSON.stringify(replies, null, 2), 'utf8');
+console.log(`Replies saved to ${repliesFilePath}`);
