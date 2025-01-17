@@ -139,6 +139,7 @@ async function processReplies(inputFile) {
   if (newReplies.length > 0) {
     const existingData = await readJsonFile('reports/allreadyUpvoted.json');
     await writeJsonFile('allreadyUpvoted.json', existingData.concat(newReplies));
+    console.log(chalk.green(`${newReplies.length} new entries have been added to allreadyUpvoted.json.`));
   }
 
   console.log(chalk.magenta('All comments have been processed.'));

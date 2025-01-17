@@ -20,8 +20,8 @@ Hier die Startreihenfolge:
 2. Manuell "./reports/results_YYMMDD_charity.json" + "/.reports/results_YYMMDD_help.json" überprüfen und die relevanten Zeilen "secondResult" duplizieren (Alt+Shift+Pfeilnachunten), in "AchimResult" umbenennen und nach Wunsch anpassen.
 3. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und reports/replies_YYMMDD.json gespeichert
 4. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt und es wird ein tagesaktueller reports/replies_YYMMDD.json erstellt.
+5. node postRepliesToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
 
-5. node postToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
 6. Die letzten Reports sammeln (z.B. in nextreports.json)
 7.  node createCharityReport.js reports/next_report.json
 8.  Den Report anschauen. Wenn er gefällt, umbenennen in reports/yyyymmdd_report.md 
