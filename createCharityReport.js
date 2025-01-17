@@ -1,5 +1,12 @@
 const fs = require('fs').promises;
 const path = require('path');
+const https = require('https');
+
+// Dynamischer Import von chalk
+async function loadChalk() {
+  const chalk = await import('chalk');
+  return chalk.default;
+}
 
 // Utility function to read JSON file
 async function readJsonFile(filePath) {
@@ -41,8 +48,53 @@ function getCurrentWeek() {
   return Math.floor((diff + start.getDay() + 1) / 7);
 }
 
+// Get Image and Reputation from author
+async function fetchPostData(permlink) {
+  return new Promise((resolve, reject) => {
+    const jsonUrl = `https://hive.blog/${permlink.replace('peakd.com', 'hive.blog')}.json`;
+
+    https.get(jsonUrl, (res) => {
+      let data = '';
+
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        try {
+          const jsonData = JSON.parse(data);
+          const postBody = jsonData.post.body;
+          const authorReputation = Math.floor(jsonData.post.author_reputation / 1000000000);
+
+          // First, try to find an image in the ![](url) format
+          let imageUrl = null;
+          let imageUrlMatch = postBody.match(/!\[.*?\]\((.*?)\)/);
+          if (imageUrlMatch && imageUrlMatch[1]) {
+            imageUrl = imageUrlMatch[1];
+          } else {
+            imageUrlMatch = postBody.match(/(https:\/\/[^\s]+\.(jpg|jpeg|png|gif|webp|bmp))/i);
+            if (imageUrlMatch && imageUrlMatch[1]) {
+              imageUrl = imageUrlMatch[1];
+            }
+          }
+
+          resolve({
+            imageUrl: imageUrl,
+            authorReputation: authorReputation
+          });
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }).on('error', (error) => {
+      reject(error);
+    });
+  });
+}
+
 // Main function
 async function createCharityReport() {
+  const chalk = await loadChalk();
   const reportsDir = './reports';
   const lastReportDate = await getLastReportDate(reportsDir);
   console.log(`Last Report Date: ${lastReportDate}`);
@@ -77,6 +129,14 @@ async function createCharityReport() {
   // Get the current week number
   const currentWeek = getCurrentWeek();
 
+  // Fetch post data for each entry
+  for (const entry of reportData) {
+    const postData = await fetchPostData(entry.permlink);
+    entry.imageUrl = postData.imageUrl;
+    entry.authorReputation = postData.authorReputation;
+    console.log(chalk.green(`AuthorReputation for ${entry.author} is ${entry.authorReputation}`));
+  }
+
   // Generate Markdown report
   const markdown = generateMarkdownReport(reportData, currentWeek);
 
@@ -94,7 +154,6 @@ async function createCharityReport() {
 }
 
 // Function to generate Markdown report from report data
-// Function to generate Markdown report from report data
 function generateMarkdownReport(reportData, currentWeek) {
   let markdown = `# Charity Heroes Report Week ${currentWeek}\n\n`;
   markdown += `Hello everyone,\n\n`;
@@ -105,7 +164,7 @@ function generateMarkdownReport(reportData, currentWeek) {
   markdown += `|-|-|-|-|-|-|\n`;
 
   reportData.forEach((entry, index) => {
-    markdown += `|${index + 1}|${entry.reply.match(/!CHARY:(\d+)/)[1]}|${entry.author}|-|[Link](${entry.permlink})|![image](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)|\n`;
+    markdown += `|${index + 1}|${entry.reply.match(/!CHARY:(\d+)/)[1]}|${entry.author}|${entry.authorReputation}|[Link](${entry.permlink})|![image](${entry.imageUrl})|\n`;
   });
 
   markdown += `\n\n# What did they do?\n\n`;
