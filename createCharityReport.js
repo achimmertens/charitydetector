@@ -33,6 +33,14 @@ async function getLastReportDate(reportsDir) {
   return new Date(Math.max.apply(null, reportDates));
 }
 
+// Function to get the current week number
+function getCurrentWeek() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const diff = (now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60000) / 86400000;
+  return Math.floor((diff + start.getDay() + 1) / 7);
+}
+
 // Main function
 async function createCharityReport() {
   const reportsDir = './reports';
@@ -66,12 +74,11 @@ async function createCharityReport() {
     return new Date(a.replyDate) - new Date(b.replyDate);
   });
 
-  // Process the report data as needed
-  // Example: Print the report data
-  console.log('Report Data:', JSON.stringify(reportData, null, 2));
+  // Get the current week number
+  const currentWeek = getCurrentWeek();
 
   // Generate Markdown report
-  const markdown = generateMarkdownReport(reportData);
+  const markdown = generateMarkdownReport(reportData, currentWeek);
 
   // Generate output file name based on current date
   const currentDate = new Date();
@@ -87,15 +94,41 @@ async function createCharityReport() {
 }
 
 // Function to generate Markdown report from report data
-function generateMarkdownReport(reportData) {
-  let markdown = '# Charity Report\n\n';
-  reportData.forEach(entry => {
-    markdown += `## ${entry.author}\n\n`;
-    markdown += `**Permlink:** [${entry.permlink}](${entry.permlink})\n\n`;
-    markdown += `**Reply:** ${entry.reply}\n\n`;
-    markdown += `**First Result:**\n\n\`\`\`\n${entry.firstResult}\n\`\`\`\n\n`;
+// Function to generate Markdown report from report data
+function generateMarkdownReport(reportData, currentWeek) {
+  let markdown = `# Charity Heroes Report Week ${currentWeek}\n\n`;
+  markdown += `Hello everyone,\n\n`;
+  markdown += `Here are the charity heroes of week ${currentWeek}:\n\n`;
+  markdown += `![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)\n\n`;
+  markdown += `# Charity Heroes Of Week ${currentWeek}:\n`;
+  markdown += `|Nr.|Chary Score|Author|Reputation|url|image|\n`;
+  markdown += `|-|-|-|-|-|-|\n`;
+
+  reportData.forEach((entry, index) => {
+    markdown += `|${index + 1}|${entry.reply.match(/!CHARY:(\d+)/)[1]}|${entry.author}|-|[Link](${entry.permlink})|![image](https://files.peakd.com/file/peakd-hive/charitychecker/23wzWzqvLFLeh8FziFFqjgJkn7wkA2qrXdS5JJj9u69c5Fm5X4hVbeHf5KyKqSxrKQAeg.png)|\n`;
   });
-  markdown += `\n\n Let's make the world a little bit better.\n\n Regards,\n CharityChecker (alias @achimmertens)\n`;
+
+  markdown += `\n\n# What did they do?\n\n`;
+
+  reportData.forEach(entry => {
+    markdown += `## @${entry.author}\n`;
+    markdown += `${entry.reply}\n\n`;
+  });
+
+  markdown += `# Call to action\n\n`;
+  markdown += `![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/Eo2BSgYeC4RZVPxTbUwe7PLwA9TAYhDwgqTRvFucPpWbop9KqwSm9UMJSakh24ojRUd.png)\n\n`;
+  markdown += `# What's about this report?\n\n`;
+  markdown += `![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/Eo2BSgYeC4RZVPxTbUwe7PLwA9TAYhDwgqTRvFucPpWbop9KqwSm9UMJSakh24ojRUd.png)\n\n`;
+  markdown += `# Links to follow:\n\n`;
+  markdown += `* [Achim Mertens](https://peakd.com/@achimmertens)\n`;
+  markdown += `* [CharityChecker](https://peakd.com/@charitychecker)\n`;
+  markdown += `* [About Charitychecker](https://peakd.com/hive-149312/@charitychecker/charitychecker-my-introducemyself-deutschenglish)\n`;
+  markdown += `* [Hive Marketing](https://peakd.com/c/hive-154303/trending)\n`;
+  markdown += `* [Advertisingbot2](https://peakd.com/@advertisingbot2)\n\n`;
+  markdown += `Let's make the world a little bit better.\n\n`;
+  markdown += `Regards,\n`;
+  markdown += `CharityChecker (alias @achimmertens)\n`;
+
   return markdown;
 }
 
