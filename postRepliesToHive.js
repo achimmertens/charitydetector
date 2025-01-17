@@ -27,6 +27,10 @@ async function writeJsonFile(filename, data) {
 }
 
 function cleanReply(reply) {
+  if (typeof reply !== 'string') {
+    console.warn(`Warning: reply is not a string. Type: ${typeof reply}`);
+    reply = String(reply);
+  }
   return reply.replace(/\\n/g, ' ')
     .replace(/^['"]|['"]$/g, '')
     .replace(/'\s*\+\s*'/g, ' ')
@@ -44,6 +48,14 @@ async function alreadyUpvoted(permlink) {
 
 async function postComment(author, permlink, body, chalk) {
   try {
+    console.log(chalk.blue('Attempting to post comment with body:'));
+    console.log(chalk.blue(JSON.stringify(body)));
+
+    // Check if body is a string
+    if (typeof body !== 'string') {
+      throw new Error(`Invalid body type: ${typeof body}. Expected string.`);
+    }
+
     const privateKey = PrivateKey.from(config.privateKey);
     const parentPermlink = permlink.split('/').pop();
     const commentPermlink = `re-${parentPermlink}-${Date.now()}`;
@@ -61,6 +73,7 @@ async function postComment(author, permlink, body, chalk) {
     console.log(chalk.green(`Comment posted successfully: permlink=${permlink}`));
   } catch (error) {
     console.error(chalk.red(`Error posting comment: permlink=${permlink}`, error.message));
+    console.error(chalk.red('Error details:', error));
   }
 }
 
@@ -90,14 +103,19 @@ async function sendUpvote(author, permlink, weight, chalk) {
 async function processReply(reply, chalk) {
   const author = reply.author;
   const permlink = reply.permlink.split('@')[1];
-  const body = reply.Reply;
+  let body = reply.reply; // Changed from reply.Reply to reply.reply
+
+  // Ensure body is a string and clean it
+  body = typeof body === 'string' ? cleanReply(body) : String(body);
+
+  console.log(chalk.cyan(`Processing new entry: author=${author}, permlink=${permlink}`));
+  console.log(chalk.cyan(`Reply body: ${body}`));
 
   if (await alreadyUpvoted(permlink)) {
     console.log(chalk.yellow(`Entry already processed: permlink=${reply.permlink}`));
     return null;
   }
 
-  console.log(chalk.cyan(`Processing new entry: author=${author}, permlink=${permlink}`));
   await postComment(author, permlink, body, chalk);
   await sendUpvote(author, permlink, 1000, chalk);
   await new Promise(resolve => setTimeout(resolve, 3000));
@@ -142,3 +160,4 @@ async function main() {
 }
 
 main().catch(error => console.error('Error in main process:', error.message));
+

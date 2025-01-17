@@ -21,7 +21,7 @@ const resultFiles = fs.readdirSync(resultsDir).filter(file => {
     if (match) {
         const fileDate = new Date(`20${match[1].slice(0, 2)}-${match[1].slice(2, 4)}-${match[1].slice(4, 6)}`);
         console.log(`Found file: ${file} with date: ${fileDate}`);
-        return fileDate >= latestUpvoteDate;
+        return fileDate <= latestUpvoteDate;
     }
     return false;
 });
@@ -73,7 +73,7 @@ results.forEach(entry => {
                     author: entry.content.author,
                     permlink: entry.content.permlink,
                     reply: cleanReply(cleanedAchimResult),
-                    firstResult: entry.firstResult
+                    firstResult: entry.firstResult.toString()  // Ensure firstResult is a string
                 });
                 console.log(`Added reply for: ${entry.content.permlink}`);
             }
