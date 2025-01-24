@@ -25,7 +25,7 @@ Hier die Startreihenfolge:
    3. node postRepliesToHive.js -> Die Einträge aus den neuen replies_YYMMDD.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
 4.  node createCharityReport.js -> Es werden die Reply-Files gelesen, die seit dem letzten Report neu dazu gekommen sind und als Ergebnis erscheint ein neuer reports/yyyymmdd_report.md
 5.  Den Report anschauen und ggf. anpassen.
-6.  Den Report hochladen mit node postReportToHive.js reports/yyyymmdd_report.md
+6.  Den Report hochladen mit node postReportToHive.js ./reports/report_yymmdd.md
 7.  Ergebnis checken und rebloggen.
 
 # Nächste Stufen:
