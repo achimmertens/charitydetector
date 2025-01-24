@@ -1,3 +1,9 @@
+// This script reads replies from a JSON file and posts them to the Hive blockchain.
+// It initializes a Hive client, processes each reply, and sends comments and upvotes.
+// The script ensures that each reply is posted only once by checking an already upvoted list.
+
+// Inputfile Kriterien: Es wird replies_YYMMDD.json gelesen wo YYMMDD jünger ist als das latestUpvoteDate aus allreadyUpvoted.json.
+
 const fs = require('fs').promises;
 const { Client, PrivateKey } = require('@hiveio/dhive');
 const config = require('./hiveConfig.js');
@@ -22,31 +28,75 @@ async function readJsonFile(filename) {
   }
 }
 
-async function writeJsonFile(filename, data) {
-  await fs.writeFile(filename, JSON.stringify(data, null, 2));
-}
-
-function cleanReply(reply) {
-  if (typeof reply !== 'string') {
-    console.warn(`Warning: reply is not a string. Type: ${typeof reply}`);
-    reply = String(reply);
+async function writeJsonFile(filePath, data) {
+  const dir = path.dirname(filePath);
+  if (!fs.existsSync(dir)) {
+    await fs.mkdir(dir, { recursive: true });
   }
-  return reply.replace(/\\n/g, ' ')
-    .replace(/^['"]|['"]$/g, '')
-    .replace(/'\s*\+\s*'/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .split('},')[0];
+  await fs.writeFile(filePath, JSON.stringify(data, null, 2));
 }
 
-async function alreadyUpvoted(permlink) {
-  const allreadyUpvotedData = await readJsonFile('./reports/allreadyUpvoted.json');
-  return allreadyUpvotedData.some(entry => 
-    entry.content.permlink.replace('https://peakd.com/@', '') === permlink
-  );
+async function postRepliesToHive() {
+  const chalk = await loadChalk();
+  const alreadyUpvotedPath = './reports/allreadyUpvoted.json';
+
+  // Read the already upvoted list
+  const alreadyUpvoted = await readJsonFile(alreadyUpvotedPath);
+  const latestUpvoteDate = new Date(alreadyUpvoted[alreadyUpvoted.length - 1].Upvotedate);
+  console.log(`Latest Upvote Date: ${latestUpvoteDate}`);
+
+  // Read all reply files in the ./reports directory
+  const repliesDir = './reports';
+  const replyFiles = (await fs.readdir(repliesDir)).filter(file => {
+    const match = file.match(/^replies_(\d{6})\.json$/);
+    if (match) {
+      const fileDate = new Date(`20${match[1].slice(0, 2)}-${match[1].slice(2, 4)}-${match[1].slice(4, 6)}`);
+      return fileDate > latestUpvoteDate;
+    }
+    return false;
+  });
+  console.log(`Reply Files: ${replyFiles}`);
+
+  // Combine the replies from all matching files
+  let combinedReplies = [];
+  for (const file of replyFiles) {
+    const replies = await readJsonFile(path.join(repliesDir, file));
+    combinedReplies = combinedReplies.concat(replies);
+  }
+  console.log(`Combined Replies: ${combinedReplies.length} entries`);
+
+  if (combinedReplies.length === 0) {
+    console.log(chalk.red('No replies to post.'));
+    return;
+  }
+
+  console.log(chalk.green(`Posting ${combinedReplies.length} replies to Hive...`));
+
+  // Process each reply and post to Hive
+  for (const reply of combinedReplies) {
+    const { author, permlink, reply: comment } = reply;
+
+    // Send comment
+    await sendComment(author, permlink, comment, chalk);
+
+    // Send upvote
+    await sendUpvote(author, permlink, 10000, chalk); // 10000 represents 100% upvote
+
+    // Add to already upvoted list
+    alreadyUpvoted.push({
+      author,
+      permlink,
+      Upvotedate: new Date().toISOString()
+    });
+  }
+
+  // Write the updated already upvoted list
+  await writeJsonFile(alreadyUpvotedPath, alreadyUpvoted);
+
+  console.log(chalk.green('All replies posted successfully.'));
 }
 
-async function postComment(author, permlink, body, chalk) {
+async function sendComment(author, permlink, body, chalk) {
   try {
     console.log(chalk.blue('Attempting to post comment with body:'));
     console.log(chalk.blue(JSON.stringify(body)));
@@ -100,65 +150,4 @@ async function sendUpvote(author, permlink, weight, chalk) {
   }
 }
 
-async function processReply(reply, chalk) {
-  const author = reply.author;
-  const permlink = reply.permlink.split('@')[1];
-  let body = reply.reply; // Changed from reply.Reply to reply.reply
-
-  // Ensure body is a string and clean it
-  body = typeof body === 'string' ? cleanReply(body) : String(body);
-
-  console.log(chalk.cyan(`Processing new entry: author=${author}, permlink=${permlink}`));
-  console.log(chalk.cyan(`Reply body: ${body}`));
-
-  if (await alreadyUpvoted(permlink)) {
-    console.log(chalk.yellow(`Entry already processed: permlink=${reply.permlink}`));
-    return null;
-  }
-
-  await postComment(author, permlink, body, chalk);
-  await sendUpvote(author, permlink, 1000, chalk);
-  await new Promise(resolve => setTimeout(resolve, 3000));
-
-  return {
-    content: { author, permlink },
-    Upvotedate: new Date().toISOString()
-  };
-}
-
-async function processReplies(inputFile) {
-  const chalk = await loadChalk();
-  const replies = await readJsonFile(inputFile);
-  const newReplies = [];
-
-  for (const reply of replies) {
-    const processedReply = await processReply(reply, chalk);
-    if (processedReply) newReplies.push(processedReply);
-  }
-
-  if (newReplies.length > 0) {
-    const existingData = await readJsonFile('reports/allreadyUpvoted.json');
-    await writeJsonFile('allreadyUpvoted.json', existingData.concat(newReplies));
-    console.log(chalk.green(`${newReplies.length} new entries have been added to allreadyUpvoted.json.`));
-  }
-
-  console.log(chalk.magenta('All comments have been processed.'));
-}
-
-async function main() {
-  const chalk = await loadChalk();
-
-  if (process.argv.length < 3) {
-    console.log(chalk.red('Error: No input file specified. Please start the process i.e. like this: "node postToHive.js reports/20241119_report.json"'));
-    console.log(chalk.yellow('Usage: node postToHive.js <input-file>'));
-    process.exit(1);
-  }
-
-  const inputFile = path.resolve(process.argv[2]);
-  console.log(chalk.cyan(`Processing file: ${inputFile}`));
-
-  await processReplies(inputFile);
-}
-
-main().catch(error => console.error('Error in main process:', error.message));
-
+postRepliesToHive().catch(console.error);

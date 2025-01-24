@@ -72,8 +72,9 @@ async function runDailyChecks() {
             console.log('Running processContents.js...');
             await runScript('processContents.js', [postsFilePath]);
 
-            console.log(`Filtering and adding entries from ${resultsFilePath} to next_report.json...`);
-            await filterAndAddToReport(resultsFilePath);
+            // Ich glaube, next_report.json wird nicht mehr gebraucht.
+            //console.log(`Filtering and adding entries from ${resultsFilePath} to next_report.json...`);
+            //await filterAndAddToReport(resultsFilePath);
         }
     } catch (error) {
         console.error(`Error in daily checks: ${error.message}`);

@@ -12,7 +12,7 @@ async function fetchPosts() {
             params: {
                 sort: 'created',
                 tag: tag, // Use the tag from command line arguments
-                limit: 1 // Anzahl der Posts, die abgerufen werden sollen
+                limit: 15 // Anzahl der Posts, die abgerufen werden sollen
             },
             id: 1
         });

@@ -15,15 +15,16 @@ ollama create charyllama3 --file Charyllama3.modelfile
 # Aufruf der Scripte:
 Hier die Startreihenfolge:
 1. node daily_checks.js laufen lassen. Es startet:
-   1. fetchHive.js -> "./reports/posts_YYMMDD_charity.json" + "/.reports/posts_YYMMDD_help.json" mit den Posts und ein paar Meta-Feldern aus Hive.
+   1. fetchHive.js -> "./reports/posts_YYMMDD_charity.json" + "/.reports/posts_YYMMDD_help.json" mit den Posts und ein paar Meta-Feldern aus Hive. Hier wird auch die Iterationstiefe (Limit) eingestellt.
    2. processContent.js -> "./reports/results_YYMMDD_charity.json" + "/.reports/results_YYMMDD_help.json" -> Das Programm ruft n mal ask_ollama.js auf und braucht entsprechend lange. Die Dateien beinhalten Zusammenfassungen und Auswertungen der Posts.
+   3. Es werden die gefundenen Ergebnisse in ./reports/next_report.json hinzugefügt (?).
 2. Manuell "./reports/results_YYMMDD_charity.json" + "/.reports/results_YYMMDD_help.json" überprüfen und die relevanten Zeilen "secondResult" duplizieren (Alt+Shift+Pfeilnachunten), in "AchimResult" umbenennen und nach Wunsch anpassen.
 3. node create_replies.js -> Es wird nach !CHARY gefiltert (also die rausgefiltert, die schon mal bewertet wurden) und reports/replies_YYMMDD.json gespeichert
 4. node processReplies.js -> Es werden die neuen Replies in reports/allreplies.json hinzugefügt und es wird ein tagesaktueller reports/replies_YYMMDD.json erstellt.
 5. node postRepliesToHive.js -> Die Einträge aus replies.json werden gelesen und zu den jeweiligen Posts wird ein Upvote und ein Kommentar gesendet. Dabei wird in reports/allreadyUpvoted.json geschaut, ob der Post schon bearbeitet wurde. Im Anschluss werden die neuen Einträge hinzugefügt.
 
 6. Die letzten Reports sammeln (z.B. in nextreports.json)
-7.  node createCharityReport.js reports/next_report.json
+7.  node createCharityReport.js -> Es werden die Reply-Files gelesen, die seit dem letzten Report neu dazu gekommen sind und als Ergebnis erscheint ein neuer reports/yyyymmdd_report.md
 8.  Den Report anschauen. Wenn er gefällt, umbenennen in reports/yyyymmdd_report.md 
 9.  Den Report hochladen mit node postReportToHive.js reports/yyyymmdd_report.md
 10. Ergebnis checken und rebloggen.

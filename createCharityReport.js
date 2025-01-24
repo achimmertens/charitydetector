@@ -1,3 +1,9 @@
+// This script reads reply files, fetches additional post data, and generates a Markdown report.
+// It combines replies, sorts them, and includes author reputation and image URL in the report.
+// The final report is saved as a Markdown file in the reports directory.
+// Die Reply Files, die gelesen werden, sind die Dateien im Verzeichnis reports, die dem Muster replies_YYMMDD.json entsprechen und deren Datum jünger ist als das Last-Report-Datum. 
+
+
 const fs = require('fs').promises;
 const path = require('path');
 const https = require('https');

@@ -1,3 +1,9 @@
+// This script filters replies based on the presence of "!CHARY" and creates a new JSON file.
+// It reads input files, processes the data, and saves the filtered replies to "reports/replies_YYMMDD.json".
+// The script ensures that only new and relevant replies are included in the output file.
+
+// Inputfilekriterien: Das Datum im Dateinamen (YYMMDD) von results_YYMMDD_TAG.json muss jünger sein als das latestUpvoteDate.
+
 const fs = require('fs');
 const path = require('path');
 
@@ -21,7 +27,7 @@ const resultFiles = fs.readdirSync(resultsDir).filter(file => {
     if (match) {
         const fileDate = new Date(`20${match[1].slice(0, 2)}-${match[1].slice(2, 4)}-${match[1].slice(4, 6)}`);
         console.log(`Found file: ${file} with date: ${fileDate}`);
-        return fileDate <= latestUpvoteDate;
+        return fileDate >= latestUpvoteDate;
     }
     return false;
 });

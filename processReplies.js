@@ -1,3 +1,9 @@
+// This script processes new replies and updates the allreplies.json file.
+// It reads the latest replies, filters them, and appends them to the allreplies.json file.
+// Additionally, it creates a daily report file with the current date in the reports directory.
+
+// Inputfile Kriterien: replies_YYMMDD.json muss jünger sein als das letzte Datum in allreplies.json
+
 const fs = require('fs');
 const path = require('path');
 
