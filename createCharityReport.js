@@ -127,9 +127,11 @@ async function createCharityReport() {
   // Use the combined replies directly
   const reportData = combinedReplies;
 
-  // Sort the report data if needed
+  // Sort the report data by Chary Score in descending order
   reportData.sort((a, b) => {
-    return new Date(a.replyDate) - new Date(b.replyDate);
+    const charyScoreA = parseInt(a.reply.match(/!CHARY:(\d+)/)[1], 10);
+    const charyScoreB = parseInt(b.reply.match(/!CHARY:(\d+)/)[1], 10);
+    return charyScoreB - charyScoreA;
   });
 
   // Get the current week number
@@ -148,7 +150,7 @@ async function createCharityReport() {
 
   // Generate output file name based on current date
   const currentDate = new Date();
-  const formattedDate = currentDate.toISOString().slice(2, 10).replace(/-/g, '');
+  const formattedDate = currentDate.toISOString().slice(2, 4) + currentDate.toISOString().slice(5, 7) + currentDate.toISOString().slice(8, 10); // Change to YYMMDD
   const outputFileName = `report_${formattedDate}.md`;
   const outputFilePath = path.join(reportsDir, outputFileName);
 
