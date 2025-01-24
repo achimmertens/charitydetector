@@ -88,6 +88,8 @@ async function postRepliesToHive() {
       permlink,
       Upvotedate: new Date().toISOString()
     });
+    // Delay for 3 seconds
+   await new Promise(resolve => setTimeout(resolve, 3000));
   }
 
   // Write the updated already upvoted list
