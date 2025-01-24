@@ -180,8 +180,8 @@ function generateMarkdownReport(reportData, currentWeek) {
     markdown += `${entry.reply}\n\n`;
   });
 
-  markdown += `# Call to action\n\n`;
-  markdown += `![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/Eo2BSgYeC4RZVPxTbUwe7PLwA9TAYhDwgqTRvFucPpWbop9KqwSm9UMJSakh24ojRUd.png)\n\n`;
+  markdown += `# Call To Action\n\n`;
+  markdown += `![grafik.png](https://images.hive.blog/0x0/https://files.peakd.com/file/peakd-hive/charitychecker/23t8D6MYgc4BA1aCyxvedcMEssMdDPd8ENNjgpJ7imYTNA3rcT5t9uW7e43iVHoz4Nj9J.png)\n\n`;
   markdown += `# What's about this report?\n\n`;
   markdown += `![grafik.png](https://files.peakd.com/file/peakd-hive/charitychecker/Eo2BSgYeC4RZVPxTbUwe7PLwA9TAYhDwgqTRvFucPpWbop9KqwSm9UMJSakh24ojRUd.png)\n\n`;
   markdown += `# Links to follow:\n\n`;

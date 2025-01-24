@@ -30,7 +30,9 @@ async function readJsonFile(filename) {
 
 async function writeJsonFile(filePath, data) {
   const dir = path.dirname(filePath);
-  if (!fs.existsSync(dir)) {
+  try {
+    await fs.access(dir);
+  } catch (error) {
     await fs.mkdir(dir, { recursive: true });
   }
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
